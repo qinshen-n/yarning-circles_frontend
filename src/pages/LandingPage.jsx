@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Circle, Users, PenLine, Award, PlusCircle } from "lucide-react";
-import logoUrl from "../../img/yarningcircles_logo_transparent.png";
 import categoryImages from "../utils/category-images";
 import "./LandingPage.css";
 
@@ -30,7 +29,7 @@ function LandingPage() {
                         
                         <h1>
                             Sharing, Learning <br />
-                            <span className="h1-sub">& Respectful Conversations</span>
+                            <span className="h1-accent">& Respectful Conversations</span>
                         </h1>
                         
                         <p>
@@ -40,7 +39,7 @@ function LandingPage() {
                         
                         <div className="hero-actions centered-actions">
                             <button className="btn primary" onClick={() => navigate("/courses")}>
-                                Browse Circles
+                                Explore Circles
                             </button>
                             <button className="btn outline" onClick={() => navigate("/createcourse")}>
                                 Start a Circle
@@ -111,8 +110,7 @@ function LandingPage() {
                     <div className="cta-eyebrow">Yarning Circles</div>
                     <h2>Ready to share your knowledge?</h2> {/* Changed from "Start a circle today" */}
                     <p>
-                        Create a space for respectful learning. It only takes a few minutes 
-                        to setup your first circle and invite others.
+                        Create a welcoming space for learning. Set up your circle in minutes and invite others to join the conversation.
                     </p>
                 </div>
                 <div className="cta-actions">
