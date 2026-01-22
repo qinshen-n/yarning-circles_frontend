@@ -38,10 +38,10 @@ function LandingPage() {
                         </p>
                         
                         <div className="hero-actions centered-actions">
-                            <button className="btn primary" onClick={() => navigate("/courses")}>
+                            <button className="btn primary" onClick={() => navigate("/circles")}>
                                 Explore Circles
                             </button>
-                            <button className="btn outline" onClick={() => navigate("/createcourse")}>
+                            <button className="btn outline" onClick={() => navigate("/start-circle")}>
                                 Start a Circle
                             </button>
                         </div>
@@ -114,7 +114,7 @@ function LandingPage() {
                     </p>
                 </div>
                 <div className="cta-actions">
-                    <button className="cta-primary" onClick={() => navigate("/createcourse")}>
+                    <button className="cta-primary" onClick={() => navigate("/start-circle")}>
                         <PlusCircle size={18}/> Start a Circle
                     </button>
                 </div>

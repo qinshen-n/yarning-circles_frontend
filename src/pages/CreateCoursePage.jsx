@@ -4,7 +4,7 @@ function CreateCoursePage() {
     return (
         <div className="form-page">
             <div className="form-card">
-                <h1>Create A Course</h1>
+                <h1>Start A Circle</h1>
                 <CreateCourseForm />
             </div>
         </div>

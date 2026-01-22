@@ -115,19 +115,19 @@ function CoursePage() {
 
     // Handler for update button
     const handleUpdateClick = () => {
-        navigate(`/course/update/${id}`)
+        navigate(`/circles/update/${id}`)
     };
 
     // Handler for delete button
     const handleDeleteClick = async () => {
-        if (!window.confirm("Are you sure you want to delete this course?")) {
+        if (!window.confirm("Are you sure you want to delete this circle?")) {
             return;
         }
 
         try {
             await deleteCourse(id, auth.token);
-            alert("Course deleted successfully!");
-            navigate("/")
+            alert("Circle deleted successfully!");
+            navigate("/circles")
         } catch (err) {
             console.error("Delete failed:", err);
             alert(`Failed to delete course: ${err.message}`);
@@ -259,7 +259,7 @@ function CoursePage() {
                 <h1 className="hero-title">{course.title}</h1>
                 <div className="hero-category-owner">
                     <span className="category-badge">{categoryDisplay[course.category] || course.category}</span>
-                    <div className="owner">By {course.owner}</div>
+                    <div className="owner">Facilitated by {course.owner}</div>
                     <div className="hero-meta-line">
                         <span className="meta-item duration">
                             <Clock className="icon" />
@@ -281,7 +281,7 @@ function CoursePage() {
                             <button
                                 className="like-button-inline"
                                 onClick={incrementLikes}
-                                aria-label="Like this course"
+                                aria-label="Like this circle"
                                 disabled={hasLiked || liking}
                                 title={hasLiked ? "You already liked this course" : "Like this course"}
                             >
@@ -302,27 +302,27 @@ function CoursePage() {
                             className="btn-update"
                             onClick={handleUpdateClick}
                         >
-                            Update Course
+                            Edit Circle
                         </button>
                         <button
                             type="button"
                             className="btn-delete"
                             onClick={handleDeleteClick}
                         >
-                            Delete Course
+                            Delete Circle
                         </button>
                     </div>
                 )}
                 <div className="hero-actions">
                     {!isOwner && !isEnrolled && (
                         <button className="btn-primary" onClick={() => {
-                            if (!auth || !auth.token) { alert("Please log in to enroll."); navigate("/login"); return; }
-                            if (enrollClosed) { alert("Enrollment is closed."); return; }
+                            if (!auth || !auth.token) { alert("Please log in to join."); navigate("/login"); return; }
+                            if (enrollClosed) { alert("Joining is closed."); return; }
                             if (courseIsFull) { alert("Sorry, this course is full."); return; }
                             const res = enrollUtil(id, auth?.username, maxStudents);
                             if (!res.ok) { alert(res.reason === "full" ? "Sorry, this course is full." : "Already enrolled."); return; }
-                            alert("Enrolled successfully!"); navigate(`/course/${id}`);
-                        }}>Enroll now</button>
+                            alert("Joined successfully!"); navigate(`/circles/${id}`);
+                        }}>Join Circle</button>
                     )}
                 </div>
             </div>
@@ -330,7 +330,7 @@ function CoursePage() {
         {/* likes/rating moved into hero meta line above; removed duplicate control */}
         {/* What You Will Learn heading and content */}
         <div className="brief-description-section">
-            <h3><strong>What You Will Learn</strong></h3>
+            <h3><strong>What we'll learn together</strong></h3>
             <p>{course.brief_description}</p>
         </div>
         <div className="course-content">
@@ -350,21 +350,21 @@ function CoursePage() {
                 {/* 6 & 8. Group Course Content and Course Materials in one container */}
                 <div className="course-resources-section">
                     <div className="course-content-section">
-                        <h3><strong>Course Content</strong></h3>
+                        <h3><strong>Circle Details</strong></h3>
                         <div
                             className="rendered-content"
                             dangerouslySetInnerHTML={{ __html: decodeHTML(course.course_content) }}
                         />
                     </div>
                     <div className="course-materials-section">
-                        <h3><strong>Course Materials</strong></h3>
+                        <h3><strong>Shared Resources</strong></h3>
                         {course.image ? ( 
                             <a href ={course.image} target="_blank" rel="noopener noreferrer">
-                                View Course Material
+                                View Shared Resource
                             </a>
 
                         ) : (
-                            <p>No files uploaded for this course.</p>
+                            <p>No resources shared yet.</p>
                         )}
                     </div>
                 </div>
@@ -399,28 +399,28 @@ function CoursePage() {
                             className="btn-enroll"
                             onClick={() => {
                                 if (!auth || !auth.token) {
-                                    alert("Please log in to enroll.");
+                                    alert("Please log in to join.");
                                     navigate("/login");
                                     return;
                                 }
                                 if (enrollClosed) {
-                                    alert("Enrollment is closed.");
+                                    alert("Joining is closed.");
                                     return;
                                 }
                                 if (courseIsFull) {
-                                    alert("Sorry, this course is full.");
+                                    alert("Sorry, this circle is full.");
                                     return;
                                 }
                                 const res = enrollUtil(id, auth?.username, maxStudents);
                                 if (!res.ok) {
-                                    alert(res.reason === "full" ? "Sorry, this course is full." : "Already enrolled.");
+                                    alert(res.reason === "full" ? "Sorry, this circle is full." : "Already enrolled.");
                                     return;
                                 }
-                                alert("Enrolled successfully!");
-                                navigate(`/course/${id}`);
+                                alert("Joined successfully!");
+                                navigate(`/circles/${id}`);
                             }}
                         >
-                            Enroll
+                            Join Circle
                         </button>
                         {Number.isFinite(maxStudents) && maxStudents > 0 && (
                             <span className="enroll-hint">{Math.max(0, maxStudents - enrolledCount)} spots left</span>
@@ -435,9 +435,9 @@ function CoursePage() {
                     <div className="course-section interaction-section">                       
                         {/* Rating Area */}
                         <div className="rating-area">
-                            <h3>Rate this course</h3>
+                            <h3>Rate this circle</h3>
                             {!isEnrolled ? (
-                                <p className="text-muted">Enroll to rate this course.</p>
+                                <p className="text-muted">Enroll to rate this circle.</p>
                             ) : (
                                 <div className="rate-controls">
                                     {[1,2,3,4,5].map((n) => (

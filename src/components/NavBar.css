@@ -2,77 +2,170 @@
 #navbar {
     background-color: var(--teal);
     color: var(--white);
-    padding: 0.6rem 2rem;
+    padding: 0.8rem 2rem; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    font-family: var(--font-sourcesans);
+    
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Container for the links on the right */
+.nav-links {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    font-family: var(--font-sourcesans);
 }
 
 /* Links inside the nav */
 #navbar a {
     color: var(--white);
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    /* pill-shaped */
-    background-color: rgba(255, 255, 255, 0.18);
-    font-size: 0.9rem;
-    text-decoration: none;
-    /* remove underline */
+    padding: 0.4rem 1rem; 
+    border-radius: 50px; 
+    background-color: rgba(255, 255, 255, 0.15); 
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none; 
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-/* Keep Home on the left, push the rest to the right */
-#navbar a:first-of-type {
-    margin-right: auto;
+/* Hover state */
+#navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.3); 
+    transform: translateY(-1px); 
+    color: var(--white);
 }
 
-/* Logo link should not look like a pill button */
+/* Logo styling */
 .logo-link {
     background: transparent !important;
     padding: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+.logo-link:hover {
+    background: transparent !important;
+    transform: none;
 }
 
 .navbar-logo {
     display: block;
-    height: 36px;
+    height: 40px; 
+    width: auto;  
 }
 
-/* Primary call-to-action: Create A Course */
+/* Primary call-to-action: Start A Circle */
 #navbar a[href="/createcourse"] {
-    background-color: var(--action);
-    /* amber */
-    color: var(--black);
-    font-weight: 600;
+    background-color: var(--action); 
+    color: #0b1f34; 
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Hover state – scoped to this nav only */
-#navbar a:hover {
-    background-color: var(--brand);
-    /* coral */
-    color: var(--white);
+#navbar a[href="/createcourse"]:hover {
+    background-color: #e59e00; 
+    color: #0b1f34;
+    transform: translateY(-1px);
 }
 
-/* Prevent hover background on the logo */
-.logo-link:hover {
-    background: transparent;
-}
-
-/* "Hello, User" label */
+/* User greeting */
 .navbar-user {
     margin-left: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
-/* Responsive tweak for smaller screens */
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: opacity 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+    opacity: 0.8;
+}
+
 @media (max-width: 768px) {
     #navbar {
-        flex-wrap: wrap;
-        row-gap: 0.4rem;
-        padding: 0.6rem 1rem;
+        padding: 1rem 1.5rem;
     }
 
-    #navbar a:first-of-type {
-        margin-right: 0;
-        width: auto;
+    /* Show hamburger menu */
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* Hide nav links by default on mobile */
+    .nav-links {
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        right: 0;
+        background-color: var(--teal);
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        
+        /* Hidden by default */
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Show when mobile menu is open */
+    .nav-links.mobile-open {
+        max-height: 500px; /* Enough for all links */
+        opacity: 1;
+    }
+
+    /* Mobile link styling */
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        border-radius: 0; /* Square on mobile */
+        background-color: transparent;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: none; /* Remove translateY on mobile */
+    }
+
+    /* CTA stays highlighted on mobile */
+    #navbar a[href="/createcourse"] {
+        background-color: var(--action);
+        color: #0b1f34;
+        margin: 0.5rem 1rem;
+        border-radius: 50px;
+        border-bottom: none;
+    }
+
+    .navbar-user {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-links {
+        gap: 0.5rem; 
+    }
+
+    #navbar a {
+        font-size: 0.875rem; 
+        padding: 0.4rem 0.75rem;
     }
 }

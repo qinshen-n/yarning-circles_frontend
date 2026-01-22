@@ -93,10 +93,10 @@ function UserPage() {
             <div className="admin-body">
                 <aside className="admin-sidebar" aria-label="Profile navigation">
                     <SidebarLink id="leaderboard" label={`Leaderboard`} />
-                    <SidebarLink id="created" label={`Courses Created (${coursesCount})`} />
-                    <SidebarLink id="enrolled" label={`Courses Enrolled (${enrolledCount})`} />
-                    <SidebarLink id="liked" label={`Courses Liked (${resolvedUser?.courses_liked?.length || 0})`} />
-                    <SidebarLink id="completed" label={`Completed Courses (${completedCount})`} />
+                    <SidebarLink id="created" label={`Circles Created (${coursesCount})`} />
+                    <SidebarLink id="enrolled" label={`Circles Joined (${enrolledCount})`} />
+                    <SidebarLink id="liked" label={`Circles Liked (${resolvedUser?.courses_liked?.length || 0})`} />
+                    <SidebarLink id="completed" label={`Completed Circles (${completedCount})`} />
                     <SidebarLink id="certificates" label={`Certificates (${resolvedUser?.certificates?.length || 0})`} />
                 </aside>
 
@@ -198,7 +198,7 @@ function UserPage() {
                             </div>
 
                             <div className="lb-col lb-courses">
-                                <h2 className="lb-heading">Course Leaderboards</h2>
+                                <h2 className="lb-heading">Circle Leaderboards</h2>
                                 {(() => {
                                     const list = Array.isArray(courses) ? courses : [];
                                     const topLiked = [...list]
@@ -273,7 +273,7 @@ function UserPage() {
                                             <CourseCard key={cid} courseData={full} />
                                         ) : (
                                             <div key={cid}>
-                                                <Link to={`/course/${cid}`}>View course #{cid}</Link>
+                                                <Link to={`/circles/${cid}`}>View course #{cid}</Link>
                                             </div>
                                         );
                                     })}

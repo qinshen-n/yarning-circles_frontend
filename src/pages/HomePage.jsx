@@ -173,7 +173,7 @@ function HomePage() {
     };
 
         if (isLoading) {
-            return (<p>loading...</p>)
+            return (<p>loading circles...</p>)
         }
     
         if (error) {
@@ -185,7 +185,7 @@ function HomePage() {
             {/* Featured Section */}
             {featured && featured.length > 0 && (
                 <section id="featured-courses" className="featured-section">
-                    <h2>Featured Courses</h2>
+                    <h2>Featured Circles</h2>
                     <div className="carousel">
                         <button
                             className="carousel-btn prev"
@@ -212,15 +212,15 @@ function HomePage() {
 
             {/* All Courses Section */}
             <section className="all-courses-section">
-                <h2>All Courses</h2>
+                <h2>All Circles</h2>
                 <div className="search-row">
                     <input
                         type="text"
                         className="search-input"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search title, category, owner…"
-                        aria-label="Search courses"
+                        placeholder="Search circles by title, category, owner…"
+                        aria-label="Search circles"
                     />
                     {query && (
                         <button
@@ -247,7 +247,7 @@ function HomePage() {
                         className="sort-select"
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        aria-label="Sort courses"
+                        aria-label="Sort circles"
                     >
                         <option value="relevance">Sort: Relevance</option>
                         <option value="title">Sort: Title (A–Z)</option>

@@ -38,7 +38,7 @@ function CourseCard(props) {
         }
         // Owner can always view
         if (isOwner) {
-            navigate(`/course/${courseId}`);
+            navigate(`/circles/${courseId}`);
             return;
         }
         // If enrollment closed or full and user not enrolled, block
@@ -59,7 +59,7 @@ function CourseCard(props) {
             }
             alert("Enrolled successfully!");
         }
-        navigate(`/course/${courseId}`);
+        navigate(`/circles/${courseId}`);
     };
 
     const slugify = (text) => {
@@ -115,7 +115,7 @@ function CourseCard(props) {
 
             {/* TITLE + AUTHOR */}
             <h2 className="card-title">{courseData.title}</h2>
-            <p className="owner">by {courseData.owner}</p>
+            <p className="owner">Facilitated by {courseData.owner}</p>
 
             {/* METADATA ROW (duration + enrolment end + max students) */}
             <div className="meta-row">
@@ -126,17 +126,17 @@ function CourseCard(props) {
 
                 {/* enrol by date: show placeholder when missing */}
                 <span className={`meta-item ${enrolByText ? '' : 'placeholder'}`} aria-label="Enrollment closes">
-                    {enrolByText ? `📅 Enrollment closes ${enrolByText}` : '📅 Enrollment closes —'}
+                    {enrolByText ? `📅 Join by ${enrolByText}` : '📅 Enrollment closes —'}
                 </span>
 
                 {/* max students: show placeholder when missing */}
-                <span className={`meta-item ${typeof maxStudents === 'number' && maxStudents > 0 ? '' : 'placeholder'}`} aria-label="Max students">
+                <span className={`meta-item ${typeof maxStudents === 'number' && maxStudents > 0 ? '' : 'placeholder'}`} aria-label="Max participants">
                     {typeof maxStudents === 'number' && maxStudents > 0 ? `👤 Max ${maxStudents}` : '👤 Max —'}
                 </span>
 
                 {/* enrolled indicator: keep placeholder so layout is consistent */}
                 <span className={`meta-item enrolled ${youAreEnrolled ? '' : 'placeholder'}`} aria-hidden={!youAreEnrolled}>
-                    {youAreEnrolled ? '✅ Enrolled' : '✅ Enrolled'}
+                    {youAreEnrolled ? '✅ Joined' : '✅ Joined'}
                 </span>
 
                 {/* completed indicator: keep placeholder so layout is consistent */}
@@ -174,7 +174,7 @@ function CourseCard(props) {
                     disabled={(courseIsFull || enrollClosed) && !youAreEnrolled}
                     title={(courseIsFull || enrollClosed) && !youAreEnrolled ? (enrollClosed ? 'Enrolment closed' : 'Course is full') : 'Enrol now'}
                 >
-                    Enrol Now
+                    Join Circle
                 </button>
                 {spotsLeft !== null && spotsLeft > 0 && !enrollClosed && (
                     <div className="cta-hint">{spotsLeft} spots left</div>

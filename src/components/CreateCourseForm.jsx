@@ -268,7 +268,7 @@ function CreateCourseForm() {
         try {
             const created = await postCreateCourse(formData, auth?.token);
             // navigate to created course page or home
-            navigate(`/course/${created.id}`);
+            navigate(`/circles/${created.id}`);
         } catch (err) {
             console.error(err);
             setError(err?.message || "Failed to create course");
@@ -283,18 +283,18 @@ function CreateCourseForm() {
             {loading && <p>Creating course...</p>}
 
             <div className="form-field">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Circle Name</label>
                 <input
                     type="text"
                     id="title"
-                    placeholder="Create course title"
+                    placeholder="Name your circle"
                     onChange={handleClickChange}
                     required
                 />
             </div>
 
             <div className="form-field">
-                <label htmlFor="brief_description">Brief description of course</label>
+                <label htmlFor="brief_description">Brief description of circle</label>
                 <input
                     type="text"
                     id="brief_description"
@@ -336,7 +336,7 @@ function CreateCourseForm() {
             </div>
 
             <div className="form-field">
-                <label htmlFor="course_content">Course Content</label>
+                <label htmlFor="course_content">Circle Details</label>
                 <EditorContent editor={editor} className="tiptap" />
             </div>
 
@@ -351,7 +351,7 @@ function CreateCourseForm() {
             </div>
 
             <div className="form-field">
-                <label htmlFor="max_students">Maximum Students</label>
+                <label htmlFor="max_students">Maximum Participants</label>
                 <input
                     type="number"
                     id="max_students"
@@ -374,7 +374,7 @@ function CreateCourseForm() {
             </div>
 
             <div className="form-field">
-                <label htmlFor="enrollment_end">Enrollment End</label>
+                <label htmlFor="enrollment_end">Join Deadline</label>
                 <input
                     type="datetime-local"
                     id="enrollment_end"
@@ -485,7 +485,7 @@ function CreateCourseForm() {
 
             <div className="form-actions">
                 <button type="submit" disabled={loading} className="primary-btn">
-                    {loading ? "Creating..." : "Submit New Course"}
+                    {loading ? "Starting..." : "Start Circle"}
                 </button>
             </div>
 

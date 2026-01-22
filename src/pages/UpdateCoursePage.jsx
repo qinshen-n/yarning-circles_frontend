@@ -22,11 +22,11 @@ function UpdateCoursePage () {
         }
         if (course && course.owner !== auth.username) {
             alert("You do not have permission to edit this course.");
-            navigate(`/course/${id}`);
+            navigate(`/circles/${id}`);
         }
     }, [auth, course, navigate, id]);
 
-    if (isLoading) return <p>Loading course data...</p>
+    if (isLoading) return <p>Loading circle data...</p>
     if (error) return <p>Error loading course: {error.message}</p>;
 
     // Safety check befor rendering form
@@ -34,7 +34,7 @@ function UpdateCoursePage () {
 
     return (
         <section className="update-course-page">
-            <h2 className="underline">Update Course: {course.title}</h2>
+            <h2 className="underline">Edit Circle: {course.title}</h2>
 
             {updateMessage && <p className="success-message">{updateMessage}</p>}
         
