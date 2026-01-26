@@ -1,28 +1,38 @@
+// React & Router Imports
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAuth } from "../hooks/use-auth";
+
+// Icons Imports
 import { ThumbsUp, Clock, Users, CheckCircle, Star, MessageCircle } from "lucide-react";
-import { categoryDisplay } from "../utils/category-display";
+
+// Hook Imports
+import { useAuth } from "../hooks/use-auth";
+import useCourse from "../hooks/use-course";
+import useComments from "../hooks/use-comment";
+import useMeetings from "../hooks/use-meetings";
 
 // API Imports
 import postLike from "../api/post-likecourse";
 import deleteCourse from "../api/delete-course";
+import { handleFileUpload } from "../api/post-uploadandregister";
+import postRating from "../api/post-rating";
+import getRating from "../api/get-rating";
 
-// Hook Imports
-import useCourse from "../hooks/use-course";
-import useComments from "../hooks/use-comment";
+// Utils Imports
+import { categoryDisplay } from "../utils/category-display";
+import categoryImages from "../utils/category-images";
+import { isEnrolled as isEnrolledUtil } from "../utils/enrollment";
+import { isCompleted as isCompletedUtil, toggleCompleted as toggleCompletedUtil } from "../utils/completion";
+import { enroll as enrollUtil, getCount as getCountUtil, getEnrolledUsers as getEnrolledUsersUtil } from "../utils/enrollment";
 
 // Components Imports
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
-import categoryImages from "../utils/category-images";
-import { handleFileUpload } from "../api/post-uploadandregister";
-import postRating from "../api/post-rating";
-import getRating from "../api/get-rating";
-import { isEnrolled as isEnrolledUtil } from "../utils/enrollment";
-import { isCompleted as isCompletedUtil, toggleCompleted as toggleCompletedUtil } from "../utils/completion";
+import MeetingsList from "../components/MeetingsList";
+import CreateMeetingForm from "../components/CreateMeetingForm";
+
+// Styles Imports
 import "./CoursePage.css";
-import { enroll as enrollUtil, getCount as getCountUtil, getEnrolledUsers as getEnrolledUsersUtil } from "../utils/enrollment";
 
 function CoursePage() {
     const navigate = useNavigate();
@@ -37,6 +47,9 @@ function CoursePage() {
 
     // Fetch comments data
     const { comments, isLoading: commentsLoading, error: commentsError, addComment } = useComments(id);
+
+    // Fetch meetings data
+    const { meetings, isLoading: meetingsLoading, error: meetingsError, addMeeting } = useMeetings(id);
     
     // Get enrolled participants for community display
     const enrolledUsers = getEnrolledUsersUtil(id);
@@ -106,6 +119,11 @@ function CoursePage() {
 
     // Handler for when a new comment is added
     const handleCommentAdded = (newComment) => addComment(newComment);
+
+    // Handler for when a new meeting is created
+    const handleMeetingCreated = (newMeeting) => {
+    addMeeting(newMeeting);
+};
 
     // Enrollment check
     const isEnrolled = isEnrolledUtil(id, auth?.username);
@@ -293,6 +311,33 @@ function CoursePage() {
                 <h2>What we'll learn together</h2>
                 <p>{course.brief_description}</p>
             </section>
+
+            {/* Only show for enrolled users */}
+            {isEnrolled && (
+                <section className="circle-meetings-section">
+                    <h2>Circle Meetings</h2>
+                    <p className="section-intro">
+                        Connect with fellow learners in real-time sessions
+                    </p>
+
+        {/* Show create form for facilitators */}
+        {isOwner && (
+            <CreateMeetingForm 
+                circleId={id} 
+                onMeetingCreated={(newMeeting) => addMeeting(newMeeting)}
+            />
+        )}
+
+        {/* Show loading/error/meetings list */}
+        {meetingsLoading ? (
+            <p>Loading meetings...</p>
+        ) : meetingsError ? (
+            <p>Error loading meetings: {meetingsError.message}</p>
+        ) : (
+            <MeetingsList meetings={meetings} isOwner={isOwner} />
+        )}
+    </section>
+)}
 
             {/* Circle Details & Resources */}
             <section className="circle-content-section">

@@ -1,0 +1,129 @@
+/* SCHEDULE MEETING BUTTON */
+.btn-create-meeting {
+    width: 100%;
+    padding: 1rem;
+    background: var(--action);
+    color: var(--brand);
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1.5rem;
+}
+
+.btn-create-meeting:hover {
+    background: #e09d00;
+    transform: translateY(-2px);
+}
+
+/* FORM CONTAINER */
+.create-meeting-form {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.create-meeting-form h3 {
+    font-size: 1.3rem;
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+}
+
+/* FORM GROUPS */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--brand);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.1);
+}
+
+/* FORM ROW (Side-by-side fields) */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* FORM ACTIONS (Buttons) */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-submit,
+.btn-cancel {
+    flex: 1;
+    padding: 0.85rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-submit {
+    background: var(--highlight);
+    color: white;
+    border: none;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background: #006368;
+    transform: translateY(-2px);
+}
+
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-cancel {
+    background: white;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-cancel:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}

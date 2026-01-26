@@ -9,7 +9,6 @@ async function postMeeting(courseId, meetingData, token) {
         },
         body: JSON.stringify(meetingData)
     });
-}
 
 if (!response.ok) {
     const fallbackError = `Error creating meeting`;
@@ -20,8 +19,10 @@ if (!response.ok) {
 
     const errorMessage = data?.detail ?? fallbackError;
     throw new Error(errorMessage);
+    }
 
 return await response.json();
 }
+
 
 export default postMeeting;

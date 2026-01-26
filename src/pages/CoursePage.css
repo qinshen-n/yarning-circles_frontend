@@ -410,6 +410,27 @@
     margin-left: 0.5rem;
 }
 
+/* Meeting Section */
+.circle-meetings-section {
+    padding: 2.5rem 2.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.circle-meetings-section h2 {
+    font-family: var(--font-playfair);
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.section-intro {
+    color: #64748b;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
 /* Comments section */
 .comments-section {
     padding: 2.5rem 2.5rem;
@@ -499,6 +520,9 @@
     .circle-resources-section,
     .circle-reflection-section,
     .circle-value-section {
+        padding: 2rem 1.5rem;
+    }
+    .circle-meetings-section {  /* 🆕 Add this */
         padding: 2rem 1.5rem;
     }
 

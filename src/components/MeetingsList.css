@@ -1,0 +1,231 @@
+/* Meetings Section */
+.circle-meetings-section {
+    padding: 2.5rem 2.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.circle-meetings-section h2 {
+    font-family: var(--font-playfair);
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+/* Main Container */
+.meetings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Empty State - no meetings yet*/
+.no-meetings {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.no-meetings svg {
+    margin: 0 auto 1rem;
+    color: #cbd5e1;
+}
+
+/* Meeting Card */
+.meeting-card {
+    position: relative;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+    border-left: 3px solid var(--highlight); 
+}
+
+.meeting-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 124, 130, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Delete Button */
+.delete-meeting-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #fee;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: #dc2626;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.delete-meeting-btn:hover {
+    background: #fca5a5;
+    color: white;
+}
+
+/* Title & Description */
+.meeting-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--brand);
+    margin: 0 0 0.75rem;
+}
+
+.meeting-description {
+    color: #475569; 
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Meeting Details */
+.meeting-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.6);  /* Same as circle-stats-inline */
+    border-radius: 12px;  /* Match circle-stats-inline */
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;  /* Match stat-item gap */
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.95rem;  /* Match stat-item */
+}
+
+.detail-item svg {
+    color: var(--highlight);
+}
+
+.meeting-link {
+    color: var(--highlight);
+    font-weight: 700;  /* Match view-all-link */
+    text-decoration: none;
+}
+
+.meeting-link:hover {
+    text-decoration: underline;
+}
+
+/* RSVP Summary */
+.rsvp-summary {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #fffbeb;  /* Same as recent-discussions-preview */
+    border-left: 4px solid var(--action);  /* Match recent-discussions */
+    border-radius: 8px;
+}
+
+.rsvp-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.rsvp-count svg {
+    color: var(--action);
+}
+
+.attendees-preview {
+    font-size: 0.9rem;
+    color: #64748b;  /* Match facilitator-label */
+    margin-left: 1.5rem;
+}
+
+/* RSVP Buttons */
+.rsvp-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.rsvp-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;  /* Match btn-edit/btn-delete */
+    background: white;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rsvp-btn:hover:not(:disabled) {
+    border-color: var(--highlight);
+    background: #e0f2fe;  /* Match btn-reflect background */
+    color: var(--highlight);
+}
+
+.rsvp-btn.active {
+    background: var(--highlight);
+    border-color: var(--highlight);
+    color: white;
+}
+
+.rsvp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* USER'S RSVP STATUS */
+.your-rsvp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: rgba(16, 185, 129, 0.1);  /* Same as enrolled-badge */
+    border-radius: 50px;  /* Match enrolled-badge */
+    color: #059669;
+    font-weight: 600;
+    border: 2px solid rgba(16, 185, 129, 0.3);  /* Match enrolled-badge */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .circle-meetings-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .meeting-card {
+        padding: 1.25rem;
+    }
+
+    .meeting-title {
+        font-size: 1.15rem;
+    }
+
+    /* Stack details vertically like circle-stats-inline */
+    .meeting-details {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+
+    /* Stack buttons vertically on mobile */
+    .rsvp-buttons {
+        flex-direction: column;
+    }
+
+    .rsvp-btn {
+        width: 100%;
+    }
+}
