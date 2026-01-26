@@ -1,655 +1,508 @@
-/* 1. MAIN CONTAINER LAYOUT */
 .course-page {
-    max-width: 960px;
+    max-width: 900px;
     margin: 2rem auto 4rem;
     background-color: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-    overflow: hidden; /* keep rounded corners and crop any overflow */
-    padding-bottom: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    padding: 0;
 }
 
-/* 2. HEADER IMAGE SECTION */
-.course-header {
-    width: 100%;
-    height: 400px; /* Big dramatic image */
-    background-color: #e6f4ff;
-    position: relative;
-    overflow: hidden; /* ensure image doesn't escape header bounds */
-}
-
-/* Section wrapper so overlay can be absolutely positioned */
-.course-header-section {
-    /* keep default document flow so overlay appears below header */
-}
-
-/* Overlay below the hero image. Centers content horizontally and
-   gives comfortable spacing under the image. */
-.hero-overlay {
-    position: static;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;     /* horizontal center */
+.circle-header-community {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    padding: 3rem 2.5rem 2.5rem;
     text-align: center;
-    padding: 1.25rem 2rem 2rem;
-    gap: 0.5rem;
-    background: transparent;
+    border-bottom: 1px solid #e0e7ff;
 }
 
-.hero-title {
-    font-family: var(--font-playfair);
-    color: var(--black);
-    font-size: 2.2rem;
-    line-height: 1.05;
-    margin: 0;
-    max-width: 90%;
-}
-
-.hero-stats,
-.hero-actions {
-    /* keep interactive elements active */
-}
-
-/* Owner controls shown in the hero area (side-by-side) */
-.hero-owner-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    margin-top: 0.75rem;
-}
-
-.hero-owner-actions .btn-update,
-.hero-owner-actions .btn-delete {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-}
-
-/* Update button uses brand teal */
-.hero-owner-actions .btn-update {
-    background: var(--highlight);
-    color: var(--white);
-    border: 1px solid rgba(0,0,0,0.05);
-}
-.hero-owner-actions .btn-update:hover {
-    filter: brightness(0.95);
-}
-
-/* Delete button uses brand red/coral */
-.hero-owner-actions .btn-delete {
-    background: var(--brand);
-    color: var(--white);
-    border: 1px solid rgba(0,0,0,0.04);
-}
-.hero-owner-actions .btn-delete:hover {
-    filter: brightness(0.95);
-}
-
-/* Category and owner underneath the hero title */
-.hero-category-owner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    margin-top: 0.5rem;
-}
-
-.hero-category-owner .category-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--highlight); /* teal text color */
-    background: transparent; /* no filled background */
-    border: none;
-}
-
-.hero-category-owner .owner {
-    font-size: 0.95rem;
-    color: #444;
-    font-weight: 600;
-}
-
-/* The likes/rating control remains right after header; keep it subtle */
-.category-like-control {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
-    margin: 0.5rem 0 1rem;
-    color: #666;
-}
-
-.like-button-inline {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--highlight);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.likes-count-inline { font-weight: 700; }
-
-.rating-inline { color: #444; font-weight: 700; }
-
-/* Inline meta row (duration + rating) below owner */
-.hero-meta-line {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-    background: #f3f4f6; /* light grey background */
-    padding: 0.5rem 0.75rem;
-    border-radius: 10px;
-    margin-top: 0.5rem;
-}
-
-.hero-meta-line .meta-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #444;
-    font-weight: 700;
-}
-
-.hero-meta-line .icon {
-    width: 18px;
-    height: 18px;
-    color: var(--highlight);
-}
-
-/* Inline like control inside the meta line */
-.hero-meta-line .like-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: transparent;
-}
-
-.hero-meta-line .like-button-inline {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--highlight);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
-}
-
-.hero-meta-line .like-button-inline:disabled { opacity: 0.6; cursor: default; }
-
-.hero-meta-line .likes-count-inline { font-weight: 700; color: #444; }
-
-/* Comments count styling */
-.hero-meta-line .comments {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    color: #444;
-}
-
-/* Slightly de-emphasize the numeric color to match rating */
-.hero-meta-line .comments .icon {
-    color: var(--highlight);
-}
-
-@media (max-width: 700px) {
-    .hero-title {
-        font-size: 1.8rem;
-    }
-    .course-header {
-        height: 300px;
-    }
-}
-
-/* Hero image shown on the course page. Use `object-fit: contain` so
-   the full image is visible (no cropping). Keep block-level sizing
-   so it fills the header area while preserving aspect ratio. */
-.hero-image,
-.course-detail-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* fill the header area without leaving gaps */
-    object-position: center center;
-    display: block;
-}
-
-/* 3. HERO SECTION (Likes, Title, Meta) */
-.course-content {
-    padding: 1rem 3rem 2rem;
-}
-
-/* Likes (Floating top right or inline) */
-
-/*  
-.image-likes {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1.5rem 3rem 0; 
+.circle-category-meta {
     margin-bottom: 1rem;
 }
 
-.like-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--brand); Coral
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-} 
-
-.like-button svg {
-    width: 28px;
-    height: 28px;
-    stroke: currentColor;
-    stroke-width: 2px;
-    fill: transparent;
+.category-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--highlight);
+    background: rgba(0, 124, 130, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.like-button:disabled svg { fill: var(--brand); }
-.like-button:hover:not(:disabled) { transform: scale(1.1); }
-
-.likes-count {
-    font-family: var(--font-sourcesans);
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: var(--base-dark);
-} 
-    */
-
-/* Typography & Title */
-.course-title {
+.circle-title {
     font-family: var(--font-playfair);
     font-size: 2.5rem;
-    color: var(--black);
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 800px;
+    line-height: 1.2;
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+    font-weight: 800;
 }
 
-/* Category & Owner Wrapper*/
-.course-header-meta {
+.circle-facilitator {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0; 
-    margin-bottom: 2rem;
-    margin-top: 0;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
 }
 
-/* Category (Teal) */
-.course-header-meta h3:first-child {
-    font-family: var(--font-sourcesans);
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    color: var(--highlight);
-    margin: 0;
-    line-height: 1.4; 
-}
-
-/* Owner (Grey)) */
-.course-header-meta h3:nth-child(2) {
-    font-family: var(--font-sourcesans);
-    font-size: 1.1rem;
+.facilitator-label {
+    color: #64748b;
     font-weight: 400;
-    color: #666;
-    margin: 0;
-    line-height: 1.4; /* Tighter line height */
 }
-.course-header-meta a {
+
+.circle-facilitator strong {
+    color: var(--brand);
+    font-weight: 700;
+}
+
+.facilitator-note {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.circle-stats-inline {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.stat-item svg {
+    color: var(--highlight);
+}
+
+.circle-participants {
+    margin: 2rem 0 1.5rem;
+}
+
+.circle-participants h3 {
+    font-size: 1.1rem;
+    color: var(--brand);
+    margin-bottom: 1rem;
     font-weight: 600;
 }
 
-/* Meta Tags (Duration, Date, Icons) */
-.meta-row {
+.participant-avatars {
     display: flex;
+    justify-content: center;
+    gap: 0.5rem;
     flex-wrap: wrap;
-    justify-content: center; /* Icons stay centered */
-    gap: 1rem;
-    width: 100%;
 }
 
-.meta-item {
+.avatar-bubble {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--highlight), var(--action));
+    color: white;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0, 124, 130, 0.3);
+    border: 3px solid white;
+    transition: transform 0.2s ease;
+}
+
+.avatar-bubble:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+.avatar-bubble.more {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+    font-size: 0.85rem;
+}
+
+.circle-join-section {
+    margin: 2rem 0 1rem;
+}
+
+.btn-join-conversation {
+    background: var(--action);
+    color: var(--brand);
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(254, 175, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-join-conversation:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 175, 0, 0.5);
+}
+
+.enrolled-badge {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: #f7fafc;
-    border: 1px solid #e1e4e8;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border-radius: 50px;
     font-weight: 600;
-    color: var(--base-dark);
+    border: 2px solid rgba(16, 185, 129, 0.3);
 }
 
-.meta-icon {
-    width: 16px;
-    height: 16px;
-    color: var(--highlight);
+/* Owner controls */
+.circle-owner-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
 }
 
-.meta-item.enrolled {
-    background-color: #d1fae5;
-    color: #065f46;
-    border-color: #a7f3d0;
-}
-.meta-item.enrolled .meta-icon { color: #065f46; }
-
-/* 4. DESCRIPTION & RENDERED CONTENT */
-/* Brief Description */
-.course-description p {
-    line-height: 1.6;
-    color: var(--black);
-    margin-bottom: 2rem;
+.btn-edit,
+.btn-delete {
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
 }
 
-/* Rich Text Content */
-.rendered-content {
-    font-family: var(--font-sourcesans);
-    color: var(--black);
-    line-height: 1.8;
-    margin-bottom: 3rem;
-    text-align: left;
-    width: 100%;
-    overflow-wrap: break-word;
+.btn-edit {
+    background: var(--highlight);
+    color: white;
 }
 
-/* Ensure paragraphs inside content are also standard size */
-.rendered-content p {
+.btn-edit:hover {
+    background: #006368;
+}
+
+.btn-delete {
+    background: #fee;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.btn-delete:hover {
+    background: #fca5a5;
+    color: white;
+}
+
+.recent-discussions-preview {
+    background: #fffbeb;
+    border-left: 4px solid var(--action);
+    padding: 2rem 2.5rem;
+    margin: 0;
+}
+
+.recent-discussions-preview h3 {
+    font-size: 1.3rem;
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+    font-weight: 700;
+}
+
+.discussion-snippets {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    font-size: 1rem; /* Reset to 1rem (16px) instead of 1.1rem */
-    color: var(--black);
 }
 
-/* (The rest of h1, h2, ul, etc. remains the same) */
+.discussion-snippet {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--highlight);
+}
+
+.discussion-snippet strong {
+    color: var(--highlight);
+    font-weight: 600;
+}
+
+.discussion-snippet p {
+    margin: 0.5rem 0 0;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.view-all-link {
+    color: var(--highlight);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+/* Content sections */
+.circle-learning-section,
+.circle-content-section,
+.circle-resources-section,
+.circle-reflection-section,
+.circle-value-section {
+    padding: 2.5rem 2.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.circle-learning-section h2,
+.circle-content-section h2,
+.circle-resources-section h2,
+.circle-value-section h3 {
+    font-family: var(--font-playfair);
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.circle-learning-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #334155;
+}
+
+/* Rendered content styling */
+.rendered-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #334155;
+}
+
 .rendered-content h1,
 .rendered-content h2 {
     font-family: var(--font-playfair);
     color: var(--highlight);
-    font-weight: 700;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.5rem;
+    margin: 2rem 0 1rem;
 }
 
-.rendered-content h3 {
-    font-family: var(--font-playfair);
-    font-size: 1.4rem;
-    color: var(--black);
-    font-weight: 700;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    border-bottom: none;
-}
-
-.rendered-content ul, 
-.rendered-content ol {
+.rendered-content p {
     margin-bottom: 1.5rem;
-    margin-left: 1.5rem;
-    padding-left: 0.5rem;
+}
+
+.rendered-content ul,
+.rendered-content ol {
+    margin: 1rem 0 1.5rem 1.5rem;
 }
 
 .rendered-content li {
     margin-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    color: var(--black);
 }
 
-.rendered-content blockquote {
-    border-left: 4px solid var(--action);
-    background-color: #fffbeb;
-    margin: 2rem 0;
-    padding: 1rem 1.5rem;
-    border-radius: 0 12px 12px 0;
-    font-family: var(--font-playfair);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--base-dark);
-}
-
-.rendered-content code {
-    background-color: #f1f5f9;
-    color: var(--highlight);
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9em;
-}
-
-.rendered-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.rendered-content a {
-    color: var(--highlight);
-    text-decoration: underline;
+/* Resources */
+.resource-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--highlight);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
     font-weight: 600;
-}
-.rendered-content a:hover {
-    color: var(--brand);
+    transition: all 0.2s ease;
 }
 
-/* 5. MATERIALS & UPLOADS */
-.course-materials, .course-materials-section, .rating-area {
-    background-color: #e6f4ff; /* Light blue tint */
-    border: 1px solid #cfeaf8;
-    border-radius: 12px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2.5rem;
-    width: 100%;
-    text-align: left;
-}
-
-.course-materials h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.2rem;
-    color: var(--highlight);
-}
-
-.material-link {
-    color: var(--highlight);
-    font-weight: 700;
-    text-decoration: underline;
-    font-size: 1.1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.material-link:hover { color: var(--brand); }
-
-/* Rate controls (stars) */
-.rate-controls {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.rate-controls button {
-    background: transparent;
-    border: none;
-    font-size: 1.35rem;
-    cursor: pointer;
-    color: #9aa6b3; /* muted star color */
-    padding: 0.15rem 0.35rem;
-    border-radius: 6px;
-}
-.rate-controls button:hover {
-    color: var(--highlight);
+.resource-link:hover {
+    background: #006368;
     transform: translateY(-2px);
 }
-.rate-controls .active-star {
-    color: var(--highlight);
-    text-shadow: 0 1px 0 rgba(0,0,0,0.06);
+
+.no-resources {
+    color: #94a3b8;
+    font-style: italic;
 }
 
-/* 7. COMMENTS SECTION */
-.comments-section,
-.comment-list,
-.comment-form {
-    background-color: #e6f4ff; /* Light blue tint to match materials */
-    border: 1px solid #cfeaf8;
-    border-radius: 12px;
-    padding: 1.25rem 1.75rem;
-    margin-bottom: 2rem;
+.circle-reflection-section {
+    text-align: center;
 }
 
-.comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    font-family: var(--font-sourcesans);
-}
-
-.comment-form h3,
-.comment-list h3 {
-    margin: 0;
-    font-family: var(--font-playfair);
-    color: var(--highlight);
-}
-
-.comment-form textarea {
-    width: 100%;
-    min-height: 96px;
-    padding: 0.6rem 0.75rem;
-    border-radius: 8px;
-    border: 1px solid #dbe7ee;
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-.btn-post-comment {
-    align-self: flex-end; /* move button to the right */
-    background: var(--highlight); /* brand teal */
-    color: var(--white);
-    border: none;
-    padding: 0.55rem 1rem;
-    border-radius: 8px;
-    font-weight: 700;
+.btn-reflect,
+.btn-reflected {
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
     cursor: pointer;
-}
-.btn-post-comment:disabled { opacity: 0.6; cursor: default; }
-
-.comment-list .comment-content p { font-family: var(--font-sourcesans); margin: 0; }
-
-
-/* Owner Upload Controls */
-.owner-upload-area {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #aecbcb;
+    border: none;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
 }
 
-.owner-label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #666;
+.btn-reflect {
+    background: #e0f2fe;
+    color: var(--highlight);
+    border: 2px solid var(--highlight);
+}
+
+.btn-reflect:hover {
+    background: var(--highlight);
+    color: white;
+}
+
+.btn-reflected {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 2px solid #059669;
+}
+
+.reflection-note {
+    margin-top: 1rem;
+    color: #059669;
+    font-weight: 600;
+}
+
+.circle-value-section h3 {
+    font-size: 1.3rem;
     margin-bottom: 0.5rem;
 }
 
-.btn-upload {
-    display: inline-block;
-    background-color: var(--white);
-    border: 2px dashed var(--highlight);
-    color: var(--highlight);
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-}
-.btn-upload:hover { background-color: #e6f4ff; border-style: solid; }
-
-/* 6. ACTION BUTTONS (Enroll / Update) */
-.hero-actions {
-    margin: 2rem 0;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 0;
-    margin-bottom: 2.5rem;    /* Space below the line */
-    padding-bottom: 2.5rem;   /* Space above the line */
-    border-bottom: 1px solid #eee;
+.rating-context {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
 }
 
-.course-actions {
+.rate-controls {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
-/* ENROLL BUTTON (Crucial) === */
-.btn-enroll {
-    background-color: var(--action); /* Yellow */
-    color: var(--black);
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 0.9rem 3rem;
-    border-radius: 999px;
+.rate-controls button {
+    background: transparent;
     border: none;
+    font-size: 2rem;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(254, 175, 0, 0.4);
-    transition: transform 0.2s;
+    color: #cbd5e1;
+    transition: all 0.2s ease;
 }
 
-.btn-enroll:hover {
-    transform: translateY(-2px);
-    background-color: #ffbe2e;
+.rate-controls button:hover {
+    color: var(--action);
+    transform: scale(1.15);
 }
 
-.enroll-hint {
-    font-size: 0.9rem;
-    color: var(--base-dark);
-    font-style: italic;
+.rate-controls .active-star {
+    color: var(--action);
 }
 
-.course-content-section {
-    margin-top: 2rem;
-}
-
-.brief-description-section {
-    margin-top: 1.5rem;
-}
-
-/* Completion buttons (Mark as Completed / Completed) */
-.btn-complete,
-.btn-completed {
-    background-color: #e6f4ff; /* match course materials light-blue */
-    border: 1px solid #cfeaf8;
-    color: var(--black);
-    padding: 0.55rem 1rem;
-    border-radius: 8px;
+.rating-display {
+    font-size: 1.3rem;
     font-weight: 700;
+    color: var(--brand);
+    margin-left: 0.5rem;
+}
+
+/* Comments section */
+.comments-section {
+    padding: 2.5rem 2.5rem;
+    background: #fafafa;
+}
+
+.comments-section h2 {
+    font-family: var(--font-playfair);
+    color: var(--brand);
+    margin: 0 0 2rem;
+    font-size: 1.8rem;
+}
+
+.join-to-comment {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+}
+
+.join-to-comment a {
+    color: var(--highlight);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.circle-appreciation {
+    padding: 2rem;
+    text-align: center;
+    background: #f8fafc;
+}
+
+.btn-appreciate {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 2rem;
+    background: white;
+    border: 2px solid var(--highlight);
+    border-radius: 50px;
+    color: var(--highlight);
+    font-weight: 600;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: all 0.2s ease;
 }
-.btn-complete:hover,
-.btn-completed:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+
+.btn-appreciate:hover:not(:disabled) {
+    background: var(--highlight);
+    color: white;
+    transform: translateY(-2px);
 }
-.btn-completed {
-    /* subtle visual difference for completed state */
-    background-color: #dff3ff;
-    border-color: #bfeaf8;
+
+.btn-appreciate:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(0, 124, 130, 0.1);
+    color: #059669;
+    border-color: #059669;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .circle-header-community {
+        padding: 2rem 1.5rem;
+    }
+
+    .circle-title {
+        font-size: 2rem;
+    }
+
+    .circle-stats-inline {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+
+    .participant-avatars {
+        justify-content: flex-start;
+    }
+
+    .btn-join-conversation {
+        padding: 0.9rem 2rem;
+        font-size: 1.05rem;
+    }
+
+    .circle-learning-section,
+    .circle-content-section,
+    .circle-resources-section,
+    .circle-reflection-section,
+    .circle-value-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .comments-section {
+        padding: 2rem 1.5rem;
+    }
 }

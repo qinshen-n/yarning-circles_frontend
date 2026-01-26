@@ -2,19 +2,17 @@ import useCourses from "../hooks/use-courses";
 import CourseCard from "../components/CourseCard";
 import useFeaturedCourses from "../hooks/use-featured-courses";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { getCount as getCountUtil } from "../utils/enrollment";
 import "./HomePage.css";
 
 function HomePage() {
     const { courses, isLoading, error } = useCourses();
-    const { featured, isLoading: featuredLoading } = useFeaturedCourses(); //Custom hook fetches featured fundraisers from the API. Returns featured array and loading state
+    const { featured, isLoading: featuredLoading } = useFeaturedCourses();
     const [query, setQuery] = useState("");
-    const [sortBy, setSortBy] = useState("relevance");
+    const [sortBy, setSortBy] = useState("active"); // 🔧 Changed default from "relevance" to "active"
     const [showFilters, setShowFilters] = useState(false);
     const [filters, setFilters] = useState({ categories: [], levels: [], durationMin: "", durationMax: "" });
     const featuredTrackRef = useRef(null);
-
-    // Dynamically sync card height to the tallest rendered card (e.g., first one)
-    // Moved below sortedCourses declaration to avoid TDZ errors.
 
     // Helper function to get course ID
     const getId = (item) => {
@@ -33,10 +31,9 @@ function HomePage() {
     }, [courses]);
     const levelOptions = ["Beginner", "Intermediate", "Advanced"];
 
-    // Filter out featured courses from main list and apply search + filters
+    // Filter out featured courses and apply search + filters
     const filteredCourses = useMemo(() => {
         const featuredIds = new Set((featured || []).map(getId).filter(Boolean));
-
         const term = query.toLowerCase().trim();
         const hasTerm = !!term;
 
@@ -47,7 +44,7 @@ function HomePage() {
 
         return (courses || []).filter((c) => {
             const cid = getId(c);
-            if (cid && featuredIds.has(cid)) return false; // Hide featured from main list
+            if (cid && featuredIds.has(cid)) return false;
 
             if (hasTerm) {
                 const q = term;
@@ -64,17 +61,14 @@ function HomePage() {
                 if (!(matchesBase || matchesExtras)) return false;
             }
 
-            // Category filter
             if (catSet.size > 0) {
                 const courseCat = String(c?.category || "");
                 if (!catSet.has(courseCat)) return false;
             }
-            // Level filter
             if (lvlSet.size > 0) {
                 const courseLvl = String(c?.difficulty_level ?? c?.difficulty ?? "");
                 if (!lvlSet.has(courseLvl)) return false;
             }
-            // Duration filter
             const durNum = Number(c?.duration_in_hours ?? c?.duration ?? NaN);
             if (!Number.isNaN(durNum)) {
                 if (minDur !== null && durNum < minDur) return false;
@@ -87,7 +81,7 @@ function HomePage() {
         });
     }, [courses, query, featured, filters]);
 
-    // Sort the filtered courses based on selected sort option
+    // 🔧 NEW: Sort with "active" option (most participants)
     const sortedCourses = useMemo(() => {
         const list = [...(filteredCourses || [])];
         const collator = new Intl.Collator(undefined, { sensitivity: "base" });
@@ -107,12 +101,19 @@ function HomePage() {
             const raw = x?.created_at ?? x?.createdAt ?? x?.date ?? null;
             const parsed = raw ? Date.parse(raw) : NaN;
             if (!Number.isNaN(parsed)) return parsed;
-            // Fallback: use numeric ID as a proxy for recency if available
             const idNum = Number(getId(x) ?? 0);
             return idNum;
         };
+        // 🔧 NEW: Get participant count for "active" sort
+        const participantsOf = (x) => {
+            const cid = getId(x);
+            return cid ? getCountUtil(cid) : 0;
+        };
 
         switch (sortBy) {
+            case "active": // 🔧 NEW: Sort by most participants
+                list.sort((a, b) => participantsOf(b) - participantsOf(a));
+                break;
             case "title":
                 list.sort((a, b) => collator.compare(a?.title ?? "", b?.title ?? ""));
                 break;
@@ -133,14 +134,13 @@ function HomePage() {
                 break;
             case "relevance":
             default:
-                // Keep API/default order
                 break;
         }
 
         return list;
     }, [filteredCourses, sortBy]);
 
-    // Dynamically sync card height to the tallest rendered card
+    // Sync card heights
     useEffect(() => {
         const measureAndSetHeight = () => {
             const featuredCards = document.querySelectorAll('.featured-list .course-card');
@@ -172,20 +172,39 @@ function HomePage() {
         el.scrollBy({ left: dir * amount, behavior: "smooth" });
     };
 
-        if (isLoading) {
-            return (<p>loading circles...</p>)
-        }
-    
-        if (error) {
-            return (<p>{error.message}</p>)
-        }
-    
+    if (isLoading) return <p>loading circles...</p>;
+    if (error) return <p>{error.message}</p>;
+
     return (
         <div className="home-container">
+            {/* 🔧 NEW: Community welcome message */}
+            <section className="community-welcome">
+                <h1>Welcome to Yarning Circles</h1>
+                <p className="welcome-subtitle">
+                    Join learning conversations where everyone shares, everyone grows, and accessibility comes first.
+                </p>
+                <div className="community-stats">
+                    <div className="stat-card">
+                        <div className="stat-number">{courses?.length || 0}</div>
+                        <div className="stat-label">Active Circles</div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-number">
+                            {courses?.reduce((sum, c) => {
+                                const cid = getId(c);
+                                return sum + (cid ? getCountUtil(cid) : 0);
+                            }, 0) || 0}
+                        </div>
+                        <div className="stat-label">Participants</div>
+                    </div>
+                </div>
+            </section>
+
             {/* Featured Section */}
             {featured && featured.length > 0 && (
                 <section id="featured-courses" className="featured-section">
-                    <h2>Featured Circles</h2>
+                    <h2>Active Conversations</h2>
+                    <p className="section-subtitle">Join these vibrant learning circles</p>
                     <div className="carousel">
                         <button
                             className="carousel-btn prev"
@@ -210,16 +229,16 @@ function HomePage() {
                 </section>
             )}
 
-            {/* All Courses Section */}
+            {/* All Circles Section */}
             <section className="all-courses-section">
-                <h2>All Circles</h2>
+                <h2>Explore All Circles</h2>
                 <div className="search-row">
                     <input
                         type="text"
                         className="search-input"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search circles by title, category, owner…"
+                        placeholder="Search circles by title, category, facilitator…"
                         aria-label="Search circles"
                     />
                     {query && (
@@ -249,15 +268,17 @@ function HomePage() {
                         onChange={(e) => setSortBy(e.target.value)}
                         aria-label="Sort circles"
                     >
+                        <option value="active">Sort: Most Active</option>
                         <option value="relevance">Sort: Relevance</option>
                         <option value="title">Sort: Title (A–Z)</option>
-                        <option value="likes">Sort: Likes (High→Low)</option>
+                        <option value="likes">Sort: Most Appreciated</option>
                         <option value="newest">Sort: Newest</option>
                         <option value="durationAsc">Sort: Duration (Short→Long)</option>
                         <option value="durationDesc">Sort: Duration (Long→Short)</option>
                         <option value="difficulty">Sort: Difficulty (Beginner→Advanced)</option>
                     </select>
                 </div>
+
                 {showFilters && (
                     <div id="filter-panel" className="filter-panel" role="region" aria-label="Filters">
                         <div className="filter-section">
@@ -342,6 +363,7 @@ function HomePage() {
                         </div>
                     </div>
                 )}
+
                 <div id="course-list">
                     {sortedCourses.map((courseData, key) => {
                         return <CourseCard key={key} courseData={courseData} />;
