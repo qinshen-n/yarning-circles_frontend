@@ -3,7 +3,7 @@ async function postMilestone(courseId, milestoneData, token) {
 
     const response = await fetch(url, {
         method: "POST",
-        hearders: {
+        headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
         },

@@ -1,3 +1,110 @@
+/* ═══════════════════════════════════════════════════════════ */
+/* PUBLIC SECTION STYLING */
+/* ═══════════════════════════════════════════════════════════ */
+
+.circle-overview-public {
+    /* Public section has lighter background */
+}
+
+/* Enrolled badge with dashboard hint */
+.enrolled-badge-with-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dashboard-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+    animation: gentle-bounce 2s ease-in-out infinite;
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+}
+
+/* Recent conversations teaser (for non-members) */
+.recent-conversations-teaser {
+    padding: 2rem 2.5rem;
+    background: #fffbeb;
+    border-left: 4px solid var(--action);
+}
+
+.recent-conversations-teaser h3 {
+    font-size: 1.3rem;
+    color: var(--brand);
+    margin: 0 0 1.5rem;
+}
+
+.conversation-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.preview-bubble {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--highlight);
+}
+
+.preview-bubble strong {
+    color: var(--highlight);
+    font-weight: 600;
+}
+
+.preview-bubble p {
+    margin: 0.5rem 0 0;
+    color: #475569;
+}
+
+.preview-cta {
+    color: #64748b;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* DASHBOARD DIVIDER */
+/* ═══════════════════════════════════════════════════════════ */
+
+.dashboard-divider {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-top: 3px solid var(--highlight);
+    border-bottom: 3px solid var(--highlight);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    margin: 0;
+}
+
+.divider-content h2 {
+    font-family: var(--font-playfair);
+    font-size: 2rem;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
+
+.divider-content p {
+    color: #475569;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* EXISTING STYLES CONTINUE BELOW */
+/* ═══════════════════════════════════════════════════════════ */
+
 .course-page {
     max-width: 900px;
     margin: 2rem auto 4rem;
@@ -257,16 +364,14 @@
 .circle-learning-section,
 .circle-content-section,
 .circle-resources-section,
-.circle-reflection-section,
-.circle-value-section {
+.circle-reflection-section {
     padding: 2.5rem 2.5rem;
     border-bottom: 1px solid #f1f5f9;
 }
 
 .circle-learning-section h2,
 .circle-content-section h2,
-.circle-resources-section h2,
-.circle-value-section h3 {
+.circle-resources-section h2 {
     font-family: var(--font-playfair);
     color: var(--brand);
     margin: 0 0 1.5rem;
@@ -367,49 +472,6 @@
     font-weight: 600;
 }
 
-.circle-value-section h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-}
-
-.rating-context {
-    color: #64748b;
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-}
-
-.rate-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.rate-controls button {
-    background: transparent;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #cbd5e1;
-    transition: all 0.2s ease;
-}
-
-.rate-controls button:hover {
-    color: var(--action);
-    transform: scale(1.15);
-}
-
-.rate-controls .active-star {
-    color: var(--action);
-}
-
-.rating-display {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--brand);
-    margin-left: 0.5rem;
-}
-
 /* Meeting Section */
 .circle-meetings-section {
     padding: 2.5rem 2.5rem;
@@ -422,6 +484,12 @@
     margin: 0 0 1.5rem;
     font-size: 1.8rem;
     font-weight: 700;
+}
+
+/* Milestones Section */
+.circle-milestones-section {
+    padding: 2.5rem 2.5rem;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .section-intro {
@@ -454,40 +522,101 @@
     color: var(--highlight);
     font-weight: 700;
     text-decoration: underline;
+    cursor: pointer;
 }
 
-.circle-appreciation {
-    padding: 2rem;
+/* Locked comments message for non-enrolled users */
+.comments-locked {
     text-align: center;
+    padding: 3rem 2rem;
     background: #f8fafc;
+    border-radius: 12px;
+    border: 2px dashed #e2e8f0;
+    margin: 2rem 0;
+}
+
+.locked-message {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* APPRECIATION SECTION - UPDATED */
+/* ═══════════════════════════════════════════════════════ */
+.circle-appreciation {
+    background: linear-gradient(135deg, #fef3f3 0%, #fff5f5 100%);
+    border-radius: 0 0 16px 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+}
+
+.appreciation-content h3 {
+    font-family: var(--font-playfair);
+    color: var(--brand);
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
+
+.appreciation-context {
+    color: #64748B;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
 }
 
 .btn-appreciate {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 2rem;
+    gap: 0.6rem;
+    padding: 0.85rem 2rem;
     background: white;
-    border: 2px solid var(--highlight);
+    border: 2px solid #e2e8f0;
     border-radius: 50px;
-    color: var(--highlight);
+    font-size: 1.05rem;
     font-weight: 600;
+    color: #2D3748;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.btn-appreciate:hover:not(:disabled) {
-    background: var(--highlight);
-    color: white;
-    transform: translateY(-2px);
+.btn-appreciate:not(:disabled):hover {
+    background: #fef2f2;
+    border-color: #fca5a5;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(252, 165, 165, 0.35);
 }
 
 .btn-appreciate:disabled {
-    opacity: 0.6;
+    opacity: 0.7;
     cursor: not-allowed;
-    background: rgba(0, 124, 130, 0.1);
+    background: rgba(16, 185, 129, 0.05);
+    border-color: #86efac;
     color: #059669;
-    border-color: #059669;
+}
+
+.btn-appreciate svg {
+    transition: all 0.3s ease;
+    stroke-width: 2;
+}
+
+.btn-appreciate svg.filled {
+    fill: #ef4444;
+    stroke: #ef4444;
+    animation: heartPulse 0.4s ease;
+}
+
+.btn-appreciate:not(:disabled):hover svg {
+    transform: scale(1.15);
+}
+
+@keyframes heartPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
 }
 
 /* Mobile responsiveness */
@@ -518,15 +647,32 @@
     .circle-learning-section,
     .circle-content-section,
     .circle-resources-section,
-    .circle-reflection-section,
-    .circle-value-section {
+    .circle-reflection-section {
         padding: 2rem 1.5rem;
     }
-    .circle-meetings-section {  /* 🆕 Add this */
+
+    .circle-meetings-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .circle-milestones-section {
         padding: 2rem 1.5rem;
     }
 
     .comments-section {
         padding: 2rem 1.5rem;
+    }
+
+    .circle-appreciation {
+        padding: 2rem 1.5rem;
+    }
+
+    .appreciation-content h3 {
+        font-size: 1.3rem;
+    }
+
+    .btn-appreciate {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
     }
 }

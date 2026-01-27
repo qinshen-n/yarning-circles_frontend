@@ -11,7 +11,7 @@ function CreateMeetingForm({ circleId, onMeetingCreated }) {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        datetime: "",
+        datetime: "",  
         duration_minutes: 60,
         meeting_type: "online",
         online_link: "",
@@ -33,12 +33,18 @@ function CreateMeetingForm({ circleId, onMeetingCreated }) {
 
         setIsSubmitting(true);
         try {
-            const newMeeting = await postMeeting(circleId, formData, auth.token);
+            const payload = {
+                ...formData,
+                datetime: new Date(formData.datetime).toISOString()
+            };
+
+            const newMeeting = await postMeeting(circleId, payload, auth.token);
             
             if (onMeetingCreated) {
                 onMeetingCreated(newMeeting);
             }
             
+            // Reset form
             setFormData({
                 title: "",
                 description: "",
@@ -107,11 +113,7 @@ function CreateMeetingForm({ circleId, onMeetingCreated }) {
                         id="datetime"
                         name="datetime"
                         value={formData.datetime}
-                        onChange={(e) => {
-                            const localDate = new Date(e.target.value);
-                            const isoString = localDate.toISOString();
-                            setFormData(prev => ({ ...prev, datetime: isoString }));
-                        }}
+                        onChange={handleChange} 
                         required
                     />
                 </div>

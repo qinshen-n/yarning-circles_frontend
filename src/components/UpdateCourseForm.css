@@ -1,0 +1,231 @@
+.existing-milestones-info {
+    background: #f0f9ff;
+    border: 2px solid #bae6fd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.existing-milestones-info h4 {
+    color: var(--brand);
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+    font-weight: 700;
+}
+
+.existing-modules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+.existing-modules-list li {
+    background: white;
+    border: 1px solid #e0f2fe;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    color: #475569;
+}
+
+.existing-modules-list li strong {
+    color: var(--highlight);
+    font-weight: 700;
+}
+
+.existing-modules-list li span {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.hint-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Update form specific */
+.update-course-form {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.update-course-form .form-title {
+    font-family: var(--font-playfair);
+    font-size: 2.2rem;
+    color: var(--brand);
+    margin: 0 0 2rem;
+    text-align: center;
+}
+
+.update-course-form .form-section {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.update-course-form .section-title {
+    font-family: var(--font-playfair);
+    font-size: 1.5rem;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
+
+.update-course-form .section-hint {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+}
+
+.update-course-form .form-field {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.update-course-form .form-field:last-child {
+    margin-bottom: 0;
+}
+
+.update-course-form .form-field label {
+    display: block;
+    font-weight: 600;
+    color: var(--brand);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.update-course-form .form-field input,
+.update-course-form .form-field select,
+.update-course-form .form-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.update-course-form .form-field input:focus,
+.update-course-form .form-field select:focus,
+.update-course-form .form-field textarea:focus {
+    outline: none;
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.1);
+}
+
+.update-course-form .form-field textarea {
+    resize: vertical;
+}
+
+.update-course-form .char-count {
+    position: absolute;
+    right: 0.5rem;
+    bottom: -1.5rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.update-course-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.update-course-form .error-message {
+    background: #fee;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.update-course-form .tiptap {
+    min-height: 200px;
+    padding: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+}
+
+.update-course-form .tiptap:focus {
+    outline: none;
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.1);
+}
+
+.update-course-form .tiptap p {
+    margin: 0.5rem 0;
+}
+
+.update-course-form .tiptap h1, 
+.update-course-form .tiptap h2, 
+.update-course-form .tiptap h3 {
+    margin: 1rem 0 0.5rem;
+    font-family: var(--font-playfair);
+}
+
+.update-course-form .tiptap ul, 
+.update-course-form .tiptap ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.update-course-form .form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.update-course-form .primary-btn {
+    padding: 1rem 3rem;
+    background: var(--action);
+    color: var(--brand);
+    border: none;
+    border-radius: 50px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(254, 175, 0, 0.4);
+}
+
+.update-course-form .primary-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 175, 0, 0.5);
+}
+
+.update-course-form .primary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .update-course-form {
+        padding: 1rem;
+    }
+
+    .update-course-form .form-section {
+        padding: 1.5rem;
+    }
+
+    .update-course-form .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .update-course-form .form-title {
+        font-size: 1.8rem;
+    }
+
+    .update-course-form .section-title {
+        font-size: 1.3rem;
+    }
+}

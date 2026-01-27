@@ -1,12 +1,12 @@
-async function getMilestones(courseId,) {
+async function getMilestones(courseId) {
     const url = `${import.meta.env.VITE_API_URL}/courses/${courseId}/milestones/`
 
     const response = await fetch(url, {
-        method: "GET";
+        method: "GET",
     });
 
     if (!response.ok) {
-        const fallbackError = `Error deleting meeting`;
+        const fallbackError = `Error fetching milestones`;
 
         const data = await response.json().catch(() => {
             throw new Error(fallbackError);

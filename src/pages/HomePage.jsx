@@ -1,375 +1,199 @@
 import useCourses from "../hooks/use-courses";
 import CourseCard from "../components/CourseCard";
-import useFeaturedCourses from "../hooks/use-featured-courses";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import { getCount as getCountUtil } from "../utils/enrollment";
+import { Search, X, Filter, Activity, Users } from "lucide-react"; 
 import "./HomePage.css";
 
 function HomePage() {
     const { courses, isLoading, error } = useCourses();
-    const { featured, isLoading: featuredLoading } = useFeaturedCourses();
+    
+    // UI State
     const [query, setQuery] = useState("");
-    const [sortBy, setSortBy] = useState("active"); // 🔧 Changed default from "relevance" to "active"
+    const [sortBy, setSortBy] = useState("active");
     const [showFilters, setShowFilters] = useState(false);
-    const [filters, setFilters] = useState({ categories: [], levels: [], durationMin: "", durationMax: "" });
+    const [filters, setFilters] = useState({ categories: [], levels: [] });
+    
     const featuredTrackRef = useRef(null);
 
-    // Helper function to get course ID
-    const getId = (item) => {
-        if (!item) return null;
-        if (item.id != null) return String(item.id);
-        if (item.pk != null) return String(item.pk);
-        if (item._id != null) return String(item._id);
-        return null;
+    // --- LOGIC ---
+    const getId = (item) => String(item.id ?? item.pk ?? item._id);
+    const getParticipants = (course) => {
+        const id = getId(course);
+        return id ? getCountUtil(id) : 0;
     };
 
-    // Compute filter option sources
-    const allCategories = useMemo(() => {
-        const s = new Set();
-        (courses || []).forEach((c) => { if (c?.category) s.add(String(c.category)); });
-        return Array.from(s).sort();
+    const trendingCircles = useMemo(() => {
+        if (!courses) return [];
+        return [...courses]
+            .sort((a, b) => getParticipants(b) - getParticipants(a))
+            .slice(0, 5);
     }, [courses]);
-    const levelOptions = ["Beginner", "Intermediate", "Advanced"];
 
-    // Filter out featured courses and apply search + filters
-    const filteredCourses = useMemo(() => {
-        const featuredIds = new Set((featured || []).map(getId).filter(Boolean));
+    const exploreCircles = useMemo(() => {
         const term = query.toLowerCase().trim();
-        const hasTerm = !!term;
-
-        const catSet = new Set(filters.categories);
-        const lvlSet = new Set(filters.levels);
-        const minDur = filters.durationMin === "" ? null : Number(filters.durationMin);
-        const maxDur = filters.durationMax === "" ? null : Number(filters.durationMax);
-
         return (courses || []).filter((c) => {
-            const cid = getId(c);
-            if (cid && featuredIds.has(cid)) return false;
-
-            if (hasTerm) {
-                const q = term;
-                const matchesBase = (
-                    (c.title && c.title.toLowerCase().includes(q)) ||
-                    (c.description && c.description.toLowerCase().includes(q)) ||
-                    (c.category && String(c.category).toLowerCase().includes(q)) ||
-                    (c.owner && String(c.owner).toLowerCase().includes(q))
-                );
-                const diff = String(c.difficulty_level ?? c.difficulty ?? "").toLowerCase();
-                const durRaw = c.duration_in_hours ?? c.duration;
-                const durStr = durRaw != null ? String(durRaw).toLowerCase() : "";
-                const matchesExtras = ((diff && diff.includes(q)) || (durStr && durStr.includes(q)));
-                if (!(matchesBase || matchesExtras)) return false;
+            // Search
+            if (term) {
+                const textMatch = [c.title, c.category, c.owner]
+                    .some(field => String(field || "").toLowerCase().includes(term));
+                if (!textMatch) return false;
             }
-
-            if (catSet.size > 0) {
-                const courseCat = String(c?.category || "");
-                if (!catSet.has(courseCat)) return false;
-            }
-            if (lvlSet.size > 0) {
-                const courseLvl = String(c?.difficulty_level ?? c?.difficulty ?? "");
-                if (!lvlSet.has(courseLvl)) return false;
-            }
-            const durNum = Number(c?.duration_in_hours ?? c?.duration ?? NaN);
-            if (!Number.isNaN(durNum)) {
-                if (minDur !== null && durNum < minDur) return false;
-                if (maxDur !== null && durNum > maxDur) return false;
-            } else {
-                if (minDur !== null || maxDur !== null) return false;
-            }
-
+            // Category Filter
+            if (filters.categories.length > 0 && !filters.categories.includes(c.category)) return false;
+            
             return true;
+        }).sort((a, b) => {
+            if (sortBy === "active") return getParticipants(b) - getParticipants(a);
+            if (sortBy === "newest") return new Date(b.created_at) - new Date(a.created_at);
+            if (sortBy === "likes") return (b.likes_count || 0) - (a.likes_count || 0);
+            return 0;
         });
-    }, [courses, query, featured, filters]);
+    }, [courses, query, filters, sortBy]);
 
-    // 🔧 NEW: Sort with "active" option (most participants)
-    const sortedCourses = useMemo(() => {
-        const list = [...(filteredCourses || [])];
-        const collator = new Intl.Collator(undefined, { sensitivity: "base" });
-
-        const likesOf = (x) => (x?.likes_count ?? x?.likes ?? 0);
-        const durOf = (x) => {
-            const raw = x?.duration_in_hours ?? x?.duration;
-            const n = Number(raw);
-            return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
-        };
-        const diffOrder = { beginner: 0, intermediate: 1, advanced: 2 };
-        const diffOf = (x) => {
-            const d = String(x?.difficulty_level ?? x?.difficulty ?? "").toLowerCase();
-            return d in diffOrder ? diffOrder[d] : 99;
-        };
-        const timeOf = (x) => {
-            const raw = x?.created_at ?? x?.createdAt ?? x?.date ?? null;
-            const parsed = raw ? Date.parse(raw) : NaN;
-            if (!Number.isNaN(parsed)) return parsed;
-            const idNum = Number(getId(x) ?? 0);
-            return idNum;
-        };
-        // 🔧 NEW: Get participant count for "active" sort
-        const participantsOf = (x) => {
-            const cid = getId(x);
-            return cid ? getCountUtil(cid) : 0;
-        };
-
-        switch (sortBy) {
-            case "active": // 🔧 NEW: Sort by most participants
-                list.sort((a, b) => participantsOf(b) - participantsOf(a));
-                break;
-            case "title":
-                list.sort((a, b) => collator.compare(a?.title ?? "", b?.title ?? ""));
-                break;
-            case "likes":
-                list.sort((a, b) => likesOf(b) - likesOf(a));
-                break;
-            case "newest":
-                list.sort((a, b) => timeOf(b) - timeOf(a));
-                break;
-            case "durationAsc":
-                list.sort((a, b) => durOf(a) - durOf(b));
-                break;
-            case "durationDesc":
-                list.sort((a, b) => durOf(b) - durOf(a));
-                break;
-            case "difficulty":
-                list.sort((a, b) => diffOf(a) - diffOf(b));
-                break;
-            case "relevance":
-            default:
-                break;
-        }
-
-        return list;
-    }, [filteredCourses, sortBy]);
-
-    // Sync card heights
-    useEffect(() => {
-        const measureAndSetHeight = () => {
-            const featuredCards = document.querySelectorAll('.featured-list .course-card');
-            const allCards = document.querySelectorAll('#course-list .course-card');
-            let maxH = 0;
-            [...featuredCards, ...allCards].forEach((el) => {
-                if (el) {
-                    const h = el.getBoundingClientRect().height;
-                    if (h > maxH) maxH = h;
-                }
-            });
-            if (maxH > 0) {
-                document.documentElement.style.setProperty('--card-height', `${Math.ceil(maxH)}px`);
-            }
-        };
-
-        const t = setTimeout(measureAndSetHeight, 50);
-        window.addEventListener('resize', measureAndSetHeight);
-        return () => {
-            clearTimeout(t);
-            window.removeEventListener('resize', measureAndSetHeight);
-        };
-    }, [featured, sortedCourses]);
+    const allCategories = useMemo(() => {
+        return [...new Set((courses || []).map(c => c.category))].sort();
+    }, [courses]);
 
     const scrollFeatured = (dir) => {
-        const el = featuredTrackRef.current;
-        if (!el) return;
-        const amount = Math.max(240, Math.floor(el.clientWidth * 0.9));
-        el.scrollBy({ left: dir * amount, behavior: "smooth" });
+        if (featuredTrackRef.current) {
+            featuredTrackRef.current.scrollBy({ left: dir * 320, behavior: "smooth" });
+        }
     };
 
-    if (isLoading) return <p>loading circles...</p>;
-    if (error) return <p>{error.message}</p>;
+    // 🔧 FIX 2: Explicit Clear Function
+    const handleClearFilters = (e) => {
+        e.preventDefault(); // Prevent form submission or scroll jumps
+        setFilters({ categories: [], levels: [] });
+    };
+
+    if (isLoading) return <div className="loading-state">Loading community...</div>;
+    if (error) return <div className="error-state">Error: {error.message}</div>;
+
+    const totalParticipants = courses?.reduce((acc, c) => acc + getCountUtil(c.id || c.pk), 0) || 0;
 
     return (
-        <div className="home-container">
-            {/* 🔧 NEW: Community welcome message */}
-            <section className="community-welcome">
-                <h1>Welcome to Yarning Circles</h1>
-                <p className="welcome-subtitle">
-                    Join learning conversations where everyone shares, everyone grows, and accessibility comes first.
-                </p>
-                <div className="community-stats">
-                    <div className="stat-card">
-                        <div className="stat-number">{courses?.length || 0}</div>
-                        <div className="stat-label">Active Circles</div>
+        <div className="landing-root">
+            
+            {/* 1. HERO WITH SEARCH (Improved Layout) */}
+            <section className="hero-compact">
+                <div className="hero-content">
+                    <span className="hero-eyebrow">The Community</span>
+                    <h1>Find Your <span className="h1-accent">Circle</span></h1>
+                    <p>Join peer learning groups where everyone shares, everyone grows.</p>
+                    
+                    {/* 🔧 MOVED SEARCH HERE: Makes the hero functional */}
+                    <div className="hero-search-wrapper">
+                        <Search size={22} className="search-icon"/>
+                        <input 
+                            type="text" 
+                            placeholder="What do you want to learn today?" 
+                            value={query}
+                            onChange={e => setQuery(e.target.value)}
+                        />
+                        {query && <X size={20} className="clear-icon" onClick={() => setQuery("")}/>}
                     </div>
-                    <div className="stat-card">
-                        <div className="stat-number">
-                            {courses?.reduce((sum, c) => {
-                                const cid = getId(c);
-                                return sum + (cid ? getCountUtil(cid) : 0);
-                            }, 0) || 0}
-                        </div>
-                        <div className="stat-label">Participants</div>
+
+                    <div className="header-stats-pill">
+                        <span><Activity size={16} /> {courses?.length || 0} Circles</span>
+                        <span className="divider">•</span>
+                        <span><Users size={16} /> {totalParticipants} Learners</span>
                     </div>
                 </div>
+                <div className="hero-shape circle-1"></div>
+                <div className="hero-shape circle-2"></div>
             </section>
 
-            {/* Featured Section */}
-            {featured && featured.length > 0 && (
-                <section id="featured-courses" className="featured-section">
-                    <h2>Active Conversations</h2>
-                    <p className="section-subtitle">Join these vibrant learning circles</p>
-                    <div className="carousel">
-                        <button
-                            className="carousel-btn prev"
-                            aria-label="Previous featured"
-                            onClick={() => scrollFeatured(-1)}
-                        >
-                            ‹
-                        </button>
-                        <div className="featured-list carousel-track" ref={featuredTrackRef}>
-                            {featured.map((course) => (
-                                <CourseCard key={course.id} courseData={course} />
-                            ))}
+            <div className="home-content-wrapper">
+                
+                {/* 2. TRENDING SECTION */}
+                {!query && trendingCircles.length > 0 && (
+                    <section className="featured-section">
+                        <div className="section-header-clean">
+                            <span className="section-eyebrow">Trending</span>
+                            <h2>Happening Now</h2>
                         </div>
-                        <button
-                            className="carousel-btn next"
-                            aria-label="Next featured"
-                            onClick={() => scrollFeatured(1)}
-                        >
-                            ›
-                        </button>
-                    </div>
-                </section>
-            )}
-
-            {/* All Circles Section */}
-            <section className="all-courses-section">
-                <h2>Explore All Circles</h2>
-                <div className="search-row">
-                    <input
-                        type="text"
-                        className="search-input"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search circles by title, category, facilitator…"
-                        aria-label="Search circles"
-                    />
-                    {query && (
-                        <button
-                            type="button"
-                            className="primary-btn"
-                            onClick={() => setQuery("")}
-                            aria-label="Clear search"
-                        >
-                            Clear
-                        </button>
-                    )}
-                    <button
-                        type="button"
-                        className="filter-toggle-btn"
-                        aria-expanded={showFilters}
-                        aria-controls="filter-panel"
-                        onClick={() => setShowFilters((v) => !v)}
-                    >
-                        {showFilters ? "Hide Filters" : "Filter"}
-                    </button>
-                    <label htmlFor="sort" className="visually-hidden">Sort by</label>
-                    <select
-                        id="sort"
-                        className="sort-select"
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                        aria-label="Sort circles"
-                    >
-                        <option value="active">Sort: Most Active</option>
-                        <option value="relevance">Sort: Relevance</option>
-                        <option value="title">Sort: Title (A–Z)</option>
-                        <option value="likes">Sort: Most Appreciated</option>
-                        <option value="newest">Sort: Newest</option>
-                        <option value="durationAsc">Sort: Duration (Short→Long)</option>
-                        <option value="durationDesc">Sort: Duration (Long→Short)</option>
-                        <option value="difficulty">Sort: Difficulty (Beginner→Advanced)</option>
-                    </select>
-                </div>
-
-                {showFilters && (
-                    <div id="filter-panel" className="filter-panel" role="region" aria-label="Filters">
-                        <div className="filter-section">
-                            <div className="filter-label">Category</div>
-                            <div className="filter-options">
-                                {allCategories.length === 0 && (
-                                    <div className="filter-empty">No categories</div>
-                                )}
-                                {allCategories.map((cat) => (
-                                    <label key={cat} className="filter-option">
-                                        <input
-                                            type="checkbox"
-                                            checked={filters.categories.includes(cat)}
-                                            onChange={(e) => {
-                                                const checked = e.target.checked;
-                                                setFilters((f) => {
-                                                    const next = new Set(f.categories);
-                                                    if (checked) next.add(cat); else next.delete(cat);
-                                                    return { ...f, categories: Array.from(next) };
-                                                });
-                                            }}
-                                        />
-                                        <span>{cat}</span>
-                                    </label>
+                        
+                        <div className="carousel-wrapper">
+                            <button className="cat-arrow prev" onClick={() => scrollFeatured(-1)}>‹</button>
+                            <div className="carousel-track" ref={featuredTrackRef}>
+                                {trendingCircles.map(course => (
+                                    <CourseCard key={course.id} courseData={course} isFeatured={true} />
                                 ))}
                             </div>
+                            <button className="cat-arrow next" onClick={() => scrollFeatured(1)}>›</button>
                         </div>
-
-                        <div className="filter-section">
-                            <div className="filter-label">Level</div>
-                            <div className="filter-options">
-                                {levelOptions.map((lvl) => (
-                                    <label key={lvl} className="filter-option">
-                                        <input
-                                            type="checkbox"
-                                            checked={filters.levels.includes(lvl)}
-                                            onChange={(e) => {
-                                                const checked = e.target.checked;
-                                                setFilters((f) => {
-                                                    const next = new Set(f.levels);
-                                                    if (checked) next.add(lvl); else next.delete(lvl);
-                                                    return { ...f, levels: Array.from(next) };
-                                                });
-                                            }}
-                                        />
-                                        <span>{lvl}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="filter-section">
-                            <div className="filter-label">Duration (hours)</div>
-                            <div className="filter-duration">
-                                <input
-                                    type="number"
-                                    min="0"
-                                    placeholder="Min"
-                                    value={filters.durationMin}
-                                    onChange={(e) => setFilters((f) => ({ ...f, durationMin: e.target.value }))}
-                                />
-                                <span className="duration-sep">–</span>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    placeholder="Max"
-                                    value={filters.durationMax}
-                                    onChange={(e) => setFilters((f) => ({ ...f, durationMax: e.target.value }))}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="filter-actions">
-                            <button type="button" className="btn btn-apply" onClick={() => setShowFilters(false)}>Apply</button>
-                            <button
-                                type="button"
-                                className="btn btn-clear"
-                                onClick={() => setFilters({ categories: [], levels: [], durationMin: "", durationMax: "" })}
-                            >
-                                Clear
-                            </button>
-                        </div>
-                    </div>
+                    </section>
                 )}
 
-                <div id="course-list">
-                    {sortedCourses.map((courseData, key) => {
-                        return <CourseCard key={key} courseData={courseData} />;
-                    })}
-                </div>
-            </section>
+                {/* 3. EXPLORE SECTION */}
+                <section className="explore-section">
+                    <div className="section-header-row">
+                        <div className="title-group">
+                            <span className="section-eyebrow">Discover</span>
+                            <h2>Explore All Circles</h2>
+                        </div>
+
+                        {/* 🔧 FIX 3: Buttons Aligned */}
+                        <div className="tools-right">
+                            <button 
+                                className={`btn outline ${showFilters ? 'active' : ''}`}
+                                onClick={() => setShowFilters(!showFilters)}
+                            >
+                                <Filter size={18} /> Filter
+                            </button>
+                            <select className="sort-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                                <option value="active">Most Active</option>
+                                <option value="newest">Newest</option>
+                                <option value="likes">Top Rated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Filter Drawer */}
+                    {showFilters && (
+                        <div className="filter-drawer">
+                            <div className="filter-header">
+                                <span className="filter-label">Category:</span>
+                                <button className="tag clear" onClick={handleClearFilters}>Clear Selection</button>
+                            </div>
+                            <div className="filter-tags">
+                                {allCategories.map(cat => (
+                                    <button 
+                                        key={cat}
+                                        className={`tag ${filters.categories.includes(cat) ? 'selected' : ''}`}
+                                        onClick={() => {
+                                            const newCats = filters.categories.includes(cat)
+                                                ? filters.categories.filter(c => c !== cat)
+                                                : [...filters.categories, cat];
+                                            setFilters({ ...filters, categories: newCats });
+                                        }}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* The Grid */}
+                    <div className="circle-grid">
+                        {exploreCircles.length > 0 ? (
+                            exploreCircles.map(course => (
+                                <CourseCard key={course.id} courseData={course} />
+                            ))
+                        ) : (
+                            <div className="empty-state">
+                                <h3>No circles found</h3>
+                                <p>We couldn't find any circles matching "{query}".</p>
+                                <button className="btn outline" onClick={() => {setQuery(""); setFilters({categories:[], levels:[]})}}>
+                                    Clear Search
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            </div>
         </div>
     );
 }

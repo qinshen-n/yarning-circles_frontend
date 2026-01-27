@@ -1,248 +1,227 @@
 .course-card {
-  cursor: default;
-  width: 100%;
-  background: var(--white);
-  border: 1px solid #e6e8eb;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-  height: 100%;
-  min-height: var(--card-height); /* use shared card height */
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .course-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.10);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
 }
 
-.course-card h2 {
-  margin: 8px 0 6px;
-  font-size: 1.2rem;
+/* 1. Image Area */
+.card-image-wrapper {
+    position: relative;
+    height: 160px;
+    background: #f1f5f9;
 }
 
-.course-card p {
-  margin: 4px 0;
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.course-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin: 8px 0 10px;
+.card-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.top-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-  min-height: 28px;
+.category-blue { background: #3b82f6; }
+.category-pink { background: #ec4899; }
+.category-purple { background: #8b5cf6; }
+.category-gray { background: #64748b; }
+
+.card-status-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
-.likes {
-  align-self: flex-end;
-  font-size: 0.95rem;
+.joined { background: #dcfce7; color: #166534; }
+.urgent { background: #fee2e2; color: #991b1b; }
+.full { background: #f1f5f9; color: #64748b; }
+
+/* 2. Content Area */
+.card-content {
+    padding: 1rem;
+    flex: 1;
 }
 
-.category-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  /* Unified category background: neutral grey (use same look as 'Foreign Languages') */
-  background: #e6e6e6;
-  color: var(--black);
-}
-
-/* Title: reserve two lines so category badges align */
 .card-title {
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* allow 3 lines to fit longer titles */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.3;
-  /* approximate height for three lines */
-  height: 3.9rem;
-  margin: 6px 0;
+    margin: 0 0 0.3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
 }
 
-/* Category row reserve space so badge sits at same vertical spot */
-.category-row {
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 0 6px;
+.card-facilitator {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
-/* Clamp description to keep cards consistent height */
-.brief {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.4;
-  height: 4.2rem; /* 3 lines */
+/* 3. Meta Row */
+.card-meta-row {
+    display: flex;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    color: #475569;
 }
 
-@media (max-width: 768px) {
-  .course-card { min-height: 420px; }
-  .card-title { -webkit-line-clamp: 2; height: 2.6rem; line-height: 1.3; }
-  .brief { -webkit-line-clamp: 3; height: 4.2rem; }
+.meta-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f8fafc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
 }
 
-/* Ensure consistent height on Featured and All Courses grids */
-.featured-list .course-card,
-#course-list .course-card {
-  height: 100%;
-  min-height: var(--card-height);
-}
-
-/* Keep these classes present but use neutral grey background so all categories match */
-.cat-color-1 { background: #e6e6e6; color: var(--black); }
-.cat-color-2 { background: #e6e6e6; color: var(--black); }
-.cat-color-3 { background: #e6e6e6; color: var(--black); }
-.cat-color-4 { background: #e6e6e6; color: var(--black); }
-
-/* Explicit category colours (use existing design tokens only) */
-.cat-business { background: #e6e6e6; color: var(--black); }
-.cat-arts { background: #e6e6e6; color: var(--black); }
-.cat-tech { background: #e6e6e6; color: var(--black); }
-.cat-wellbeing { background: #e6e6e6; color: var(--black); }
-.cat-default { background: #e6e6e6; color: var(--black); }
-
-.owner {
-  color: var(--highlight);
-  font-weight: 600;
-}
-
+/* 4. Footer */
 .card-footer {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+    padding: 1rem;
+    border-top: 1px solid #f1f5f9;
+    background: #fff;
 }
 
-.chip {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border: 1px solid #d0d7de;
-  background: #f3f4f6;
-  color: var(--black);
+.card-btn {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
 }
 
-.chip.category {
-  background: #e6e6e6;
+.btn-primary {
+    background: var(--highlight); /* Your teal color */
+    color: white;
 }
 
-.chip.diff.beginner { background: #e6ffe6; border-color: #b2e6b2; }
-.chip.diff.intermediate { background: #f0f7ff; border-color: #c7dbff; }
-.chip.diff.advanced { background: #ffe6e6; border-color: #e6b2b2; }
-
-.meta-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  margin: 6px 0 8px;
-  color: #667085;
-  font-size: 0.9rem;
-  min-height: 32px; /* reserve space (enough for Completed badge) so briefs align */
+.btn-primary:hover {
+    opacity: 0.9;
 }
 
-.meta-item { white-space: nowrap; }
-.meta-item.completed { color: var(--highlight); font-weight: 600; }
-
-/* Placeholder keeps same visual space but hidden for cards without a value */
-.meta-item.placeholder { visibility: hidden; }
-
-.completion-row { margin: 8px 0; }
-
-.social-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  color: #444;
-  min-height: 22px; /* reserve space for alignment */
-  margin-top: auto; /* pin social row to bottom to match first card */
+.btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
 }
 
-.cta-row {
-  margin-top: 8px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+.btn-secondary:hover {
+    background: #e2e8f0;
 }
 
-.cta-hint { font-size: 0.85rem; color: #667085; }
-
-.hours { font-size: 0.9rem; }
-.rating { font-size: 0.9rem; color: #555; }
-
-.btn-learn-more {
-  padding: 10px 16px;
-  margin-top: 10px; /* Space above the button */
-  border: none;
-  border-radius: 999px;
-  background: var(--action);
-  color: var(--black);
-  font-weight: 600;
-  cursor: pointer;
+/* Featured Card Styling */
+.course-card.featured {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid var(--highlight);
 }
 
-.btn-learn-more:hover {
-  background: var(--brand);
-  color: var(--white);
+.course-card.featured:hover {
+    box-shadow: 0 12px 24px rgba(0, 124, 130, 0.2);
 }
 
-.btn-learn-more:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.course-card.featured .card-title {
+    font-size: 1.25rem;
 }
 
-/* Status badges (Enrolled, Full, Capacity) */
-.status-row {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  min-height: 28px;
-  margin: 4px 0 8px;
+/* Featured Badge */
+.featured-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: 1px solid #d0d7de;
+/* Description (Featured only) */
+.card-description {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 1rem;
 }
 
-.status-badge.enrolled { background: #e6ffe6; color: #035; border-color: #b2e6b2; }
-.status-badge.full { background: #ffe6e6; color: #530; border-color: #e6b2b2; }
-.status-badge.capacity { background: #f3f4f6; color: var(--black); }
+/* CTA for Featured */
+.card-cta {
+    text-align: center;
+    color: var(--highlight);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.6rem;
+    cursor: pointer;
+}
 
-/* Difficulty & Status variants */
-.status-badge.diff.beginner { background: #e6ffe6; border-color: #b2e6b2; }
-.status-badge.diff.intermediate { background: #f0f7ff; border-color: #c7dbff; }
-.status-badge.diff.advanced { background: #ffe6e6; border-color: #e6b2b2; }
-.status-badge.stat.published { background: #e6ffe6; border-color: #b2e6b2; }
-.status-badge.stat.draft { background: #f3f4f6; }
-.status-badge.stat.archived { background: #fdf5e6; border-color: #f3d6a8; }
+.course-card.featured:hover .card-cta {
+    color: var(--action);
+}
+
+.course-card.featured {
+    border: 1px solid #fcd34d; /* Subtle Gold Border */
+    background: linear-gradient(to bottom, #fff, #fffbeb); /* Very subtle warm tint */
+}
+
+.course-card.featured:hover {
+    box-shadow: 0 12px 24px rgba(245, 158, 11, 0.15); /* Gold shadow glow */
+    transform: translateY(-4px);
+}
+
+.featured-badge {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important; /* Gold Gradient */
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.card-description {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    height: 3em; /* Limit height */
+    overflow: hidden;
+}
+
+.card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--highlight);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    transition: gap 0.2s ease;
+}
+
+.course-card.featured:hover .card-cta {
+    gap: 0.8rem; /* Arrow moves on hover */
+    color: var(--action);
+}
+
+/* Category Colors (If you haven't added them yet) */
+.category-blue { background: #3b82f6; }
+.category-pink { background: #ec4899; }
+.category-purple { background: #8b5cf6; }
+.category-green { background: #10b981; }
+.category-gray { background: #64748b; }
