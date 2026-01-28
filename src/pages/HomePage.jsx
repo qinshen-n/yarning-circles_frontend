@@ -61,7 +61,6 @@ function HomePage() {
         }
     };
 
-    // 🔧 FIX 2: Explicit Clear Function
     const handleClearFilters = (e) => {
         e.preventDefault(); // Prevent form submission or scroll jumps
         setFilters({ categories: [], levels: [] });
@@ -73,16 +72,14 @@ function HomePage() {
     const totalParticipants = courses?.reduce((acc, c) => acc + getCountUtil(c.id || c.pk), 0) || 0;
 
     return (
-        <div className="landing-root">
-            
-            {/* 1. HERO WITH SEARCH (Improved Layout) */}
+        <div className="landing-root">            
+            {/* 1. HERO WITH SEARCH */}
             <section className="hero-compact">
                 <div className="hero-content">
                     <span className="hero-eyebrow">The Community</span>
                     <h1>Find Your <span className="h1-accent">Circle</span></h1>
                     <p>Join peer learning groups where everyone shares, everyone grows.</p>
                     
-                    {/* 🔧 MOVED SEARCH HERE: Makes the hero functional */}
                     <div className="hero-search-wrapper">
                         <Search size={22} className="search-icon"/>
                         <input 

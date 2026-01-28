@@ -204,8 +204,55 @@
   padding: 1rem 0.5rem 2rem; 
   scroll-behavior: smooth;
   scrollbar-width: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
-.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track::-webkit-scrollbar { 
+  display: none; 
+}
+
+.carousel-track .course-card {
+  min-width: 320px;
+  max-width: 320px;
+  flex-shrink: 0;
+}
+
+.cat-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: var(--brand);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.cat-arrow:hover {
+  background: var(--brand);
+  color: white;
+  border-color: var(--brand);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.cat-arrow.prev {
+  left: -24px;
+}
+
+.cat-arrow.next {
+  right: -24px;
+}
+
 
 .circle-grid {
   display: grid;
@@ -283,4 +330,26 @@
   background: var(--bg-grey);
   border-radius: 24px;
   color: #888;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .carousel-track {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .carousel-track .course-card {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  
+  .cat-arrow {
+    display: none; /* Hide arrows on mobile, use swipe */
+  }
+  
+  .circle-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }

@@ -265,7 +265,7 @@ function CoursePage() {
             </section>
 
             {/* MEMBERS-ONLY SECTION: Circle Dashboard                      */}           
-            {isEnrolled && (
+            {(isEnrolled || isOwner) && (
                 <>
                     {/* Dashboard Divider */}
                     <section className="dashboard-divider">
