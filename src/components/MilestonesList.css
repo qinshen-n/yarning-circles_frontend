@@ -20,6 +20,7 @@
     color: #64748b;
     font-size: 1.05rem;
     margin: 0;
+    text-align: left;
 }
 
 /* LOADING & ERROR STATES */

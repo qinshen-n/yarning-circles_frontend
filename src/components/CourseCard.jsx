@@ -7,6 +7,10 @@ import { categoryDisplay } from "../utils/category-display";
 import { Users, Heart, Clock, ArrowRight } from "lucide-react"; 
 
 function CourseCard({ courseData, isFeatured = false }) {
+    if (!courseData) {
+        return null;
+    }
+
     const { auth } = useAuth();
     const navigate = useNavigate();
     

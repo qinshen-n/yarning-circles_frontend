@@ -18,7 +18,6 @@ import deleteCourse from "../api/delete-course";
 // Utils Imports
 import { categoryDisplay } from "../utils/category-display";
 import { isEnrolled as isEnrolledUtil } from "../utils/enrollment";
-import { isCompleted as isCompletedUtil, toggleCompleted as toggleCompletedUtil } from "../utils/completion";
 import { enroll as enrollUtil, getCount as getCountUtil, getEnrolledUsers as getEnrolledUsersUtil } from "../utils/enrollment";
 
 // Components Imports
@@ -127,13 +126,7 @@ function CoursePage() {
     };
 
     const commentsCount = Array.isArray(comments) ? comments.length : (course?.comments_count ?? null);
-
-    // Completion State
-    const [completed, setCompleted] = useState(false);
-    useEffect(() => {
-        setCompleted(isCompletedUtil(auth?.username, id));
-    }, [auth?.username, id]);
-
+    
     // Early Returns
     if (isLoading) return <p>Loading circle...</p>;
     if (error) return <p>{error.message}</p>;
@@ -169,6 +162,13 @@ function CoursePage() {
                                 return Number.isFinite(dur) && dur > 0 ? `${dur}h journey` : '—';
                             })()}
                         </span>
+
+                        {course.difficulty_level && (
+                            <span className="stat-item" style={{textTransform: 'capitalize'}}>
+                                ⚡ {course.difficulty_level}
+                            </span>
+                        )}
+
                         <span className="stat-item">
                             <Users size={16} />
                             {enrolledCount} {enrolledCount === 1 ? 'participant' : 'participants'}
@@ -246,7 +246,7 @@ function CoursePage() {
                 </section>
 
                 {/* Recent Conversations Preview (Public teaser) */}
-                {comments && comments.length > 0 && (
+                {!isEnrolled && comments && comments.length > 0 && (
                     <section className="recent-conversations-teaser">
                         <h3>Recent conversations in this circle</h3>
                         <div className="conversation-preview">
@@ -257,11 +257,9 @@ function CoursePage() {
                                 </div>
                             ))}
                         </div>
-                        {!isEnrolled && (
                             <p className="preview-cta">
                                 Join the circle to see all conversations and participate →
                             </p>
-                        )}
                     </section>
                 )}
             </section>
@@ -307,7 +305,7 @@ function CoursePage() {
 
                     {/* ZONE 3: Circle Details & Resources */}
                     <section className="circle-content-section">
-                        <h2>Circle Details</h2>
+                        <h2>📝 Circle Details</h2>
                         <div
                             className="rendered-content"
                             dangerouslySetInnerHTML={{ __html: decodeHTML(course.course_content) }}
@@ -325,29 +323,6 @@ function CoursePage() {
                             </a>
                         ) : (
                             <p className="no-resources">No resources shared yet. Check back soon!</p>
-                        )}
-                    </section>
-
-                    {/* Reflection & Completion */}
-                    <section className="circle-reflection-section">
-                        <button
-                            type="button"
-                            className={completed ? "btn-reflected" : "btn-reflect"}
-                            onClick={() => {
-                                if (!auth?.username) {
-                                    alert("Please log in to track your journey.");
-                                    navigate("/login");
-                                    return;
-                                }
-                                toggleCompletedUtil(auth.username, id);
-                                setCompleted(isCompletedUtil(auth.username, id));
-                            }}
-                            aria-pressed={completed}
-                        >
-                            {completed ? "✓ Reflected on this circle" : "Mark as reflected"}
-                        </button>
-                        {completed && (
-                            <p className="reflection-note">You've completed this learning journey</p>
                         )}
                     </section>
 

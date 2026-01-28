@@ -1,103 +1,161 @@
-.user-page { max-width: 1440px; margin: 0; padding: 20px 24px 24px 12px; }
-
-.admin-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.admin-header-left { display: flex; align-items: center; gap: 12px; }
-.admin-title { margin: 0; font-size: 1.8rem; }
-.avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid #e6e8eb; }
-.btn-create { padding: 8px 14px; border-radius: 8px; border: 1px solid #d0d7de; background: #f7f8fa; color: var(--black); font-weight: 600; }
-.btn-create:hover { background: var(--highlight); color: var(--white); border-color: var(--highlight); }
-.join-date { color: #667085; }
-
-.user-badge { display: inline-flex; align-items: center; gap: 8px; border: 2px dashed currentColor; border-radius: 999px; padding: 6px 12px; }
-.badge-icon { font-size: 1.1rem; }
-.badge-title { font-weight: 700; }
-
-.user-stats { display: none; }
-
-.achievement-progress { margin: 18px 0; }
-.badges-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.badge-item { display: flex; align-items: center; gap: 8px; background: #f7f8fa; border: 1px solid #e6e8eb; border-radius: 10px; padding: 8px 10px; }
-.badge-item.earned { border-color: #b2e6b2; background: #e6ffe6; }
-.badge-name { font-weight: 600; }
-.badge-requirement { color: #667085; font-size: 0.9rem; }
-
-.user-courses-created, .user-courses-liked, .user-courses-completed { margin: 0; }
-.user-courses-created h2, .user-courses-liked h2, .user-courses-completed h2 { display: none; }
-
-.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-
-.liked-courses-list, .completed-courses-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-.liked-courses-list li, .completed-courses-list li { background: #f7f8fa; border: 1px solid #e6e8eb; border-radius: 8px; padding: 8px 12px; }
-.liked-courses-list a, .completed-courses-list a { color: var(--highlight); font-weight: 600; }
-.liked-courses-list a:hover, .completed-courses-list a:hover { color: var(--brand); }
-
-@media (max-width: 768px) {
-  .user-page { padding: 16px; }
-  .course-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.user-page-simple {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-/* Admin two-column layout */
-.admin-layout { display: block; }
-.admin-body { display: grid; grid-template-columns: 260px 1fr; gap: 16px; margin-top: 12px; }
-.admin-sidebar { display: flex; flex-direction: column; gap: 8px; }
-.sidebar-link { text-align: left; padding: 10px 12px; border: 1px solid #e6e8eb; border-radius: 8px; background: #f7f8fa; color: var(--black); font-weight: 600; cursor: pointer; }
-.sidebar-link:hover { background: var(--highlight); color: var(--white); border-color: var(--highlight); }
-.sidebar-link.active { background: var(--action); color: var(--black); border-color: #d0d7de; }
-.admin-content { background: #fff; border: 1px solid #e6e8eb; border-radius: 12px; padding: 16px; }
-
-@media (max-width: 768px) {
-  .admin-body { grid-template-columns: 1fr; }
-  .admin-content { padding: 12px; }
+/* USER HEADER */
+.user-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 16px;
+    margin-bottom: 3rem;
 }
 
-/* Progress + Achievements */
-.profile-insights { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 12px 0; }
-.progress-card { background: #fff; border: 1px solid #e6e8eb; border-radius: 12px; padding: 12px; }
-.progress-bar { height: 12px; background: #f0f2f5; border-radius: 999px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--highlight); }
-.progress-labels { display: flex; justify-content: space-between; font-size: 0.9rem; color: #667085; margin-bottom: 6px; }
-
-.achievements-card { background: #fff; border: 1px solid #e6e8eb; border-radius: 12px; padding: 12px; }
-.badges-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.badge-item { display: flex; align-items: center; gap: 8px; background: #f7f8fa; border: 1px solid #e6e8eb; border-radius: 10px; padding: 8px 10px; }
-.badge-item.earned { border-color: #b2e6b2; background: #e6ffe6; }
-.badge-name { font-weight: 600; }
-.badge-requirement { color: #667085; font-size: 0.9rem; }
-
-/* Simple bar chart */
-.chart-card { background: #fff; border: 1px solid #e6e8eb; border-radius: 12px; padding: 12px; }
-.bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
-.bar-label { width: 140px; font-size: 0.9rem; color: #444; }
-.bar { flex: 1; height: 12px; background: #f0f2f5; border-radius: 999px; overflow: hidden; }
-.bar-fill { height: 100%; background: var(--action); }
-
-/* Leaderboard layout */
-.lb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.lb-col { background: #fff; border: 1px solid #e6e8eb; border-radius: 12px; padding: 16px; }
-.lb-heading { margin: 0 0 8px; font-size: 1.3rem; }
-.lb-section { margin-top: 10px; padding: 10px; border: 1px solid #e6e8eb; border-radius: 10px; }
-.lb-title { margin: 0 0 6px; font-weight: 700; }
-.lb-section ol { padding-left: 18px; }
-
-@media (max-width: 768px) {
-  .lb-grid { grid-template-columns: 1fr; }
+.user-intro {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-/* Distinct coloring per section */
-.lb-top-creators { background: #f7fbff; border-color: #cfe8ff; }
-.lb-top-creators .lb-title { color: #1e6bd6; }
+.user-name {
+    font-family: var(--font-playfair);
+    font-size: 2.5rem;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
 
-.lb-most-liked { background: #fffaf2; border-color: #ffe0a3; }
-.lb-most-liked .lb-title { color: #c77600; }
+.user-tagline {
+    font-size: 1.15rem;
+    color: #475569;
+    margin: 0 0 0.75rem;
+    line-height: 1.6;
+}
 
-.lb-most-completed { background: #f8fff5; border-color: #cdecc5; }
-.lb-most-completed .lb-title { color: #2b7a0b; }
+.user-since {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+}
 
-.lb-most-enrolled { background: #f6fffe; border-color: #b7ece7; }
-.lb-most-enrolled .lb-title { color: #0f766e; }
+/* QUICK STATS */
+.user-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
 
-.lb-top-courses-liked { background: #fff6fb; border-color: #f7cbe3; }
-.lb-top-courses-liked .lb-title { color: #b91c1c; }
+.stat-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
 
-.lb-top-courses-enrolled { background: #f4f9ff; border-color: #c9ddff; }
-.lb-top-courses-enrolled .lb-title { color: #1d4ed8; }
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 124, 130, 0.15);
+    border-color: var(--highlight);
+}
+
+.stat-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--highlight);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* CIRCLES SECTIONS */
+.user-circles-section {
+    margin-bottom: 4rem;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-header h2 {
+    font-family: var(--font-playfair);
+    font-size: 1.8rem;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    color: #64748b;
+    font-size: 1.05rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.circles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* EMPTY STATE */
+.user-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    color: #64748b;
+}
+
+.user-empty-state p {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+    .user-page-simple {
+        padding: 1rem;
+    }
+
+    .user-header {
+        padding: 2rem 1.5rem;
+    }
+
+    .user-name {
+        font-size: 2rem;
+    }
+
+    .user-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .circles-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+}

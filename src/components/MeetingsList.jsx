@@ -53,6 +53,7 @@ function MeetingsList({ meetings, isOwner }) {
         }
     };
 
+    // Check if there is a meeting
     if (!meetings || meetings.length === 0) {
         return (
             <div className="no-meetings">
