@@ -14,11 +14,10 @@ import useMeetings from "../hooks/use-meetings";
 // API Imports
 import postLike from "../api/post-likecourse";
 import deleteCourse from "../api/delete-course";
+import postJoin from "../api/post-join";
 
 // Utils Imports
 import { categoryDisplay } from "../utils/category-display";
-import { isEnrolled as isEnrolledUtil } from "../utils/enrollment";
-import { enroll as enrollUtil, getCount as getCountUtil, getEnrolledUsers as getEnrolledUsersUtil } from "../utils/enrollment";
 
 // Components Imports
 import CommentForm from "../components/CommentForm";
@@ -40,29 +39,56 @@ function CoursePage() {
     const [hasAppreciated, setHasAppreciated] = useState(false);
     const [appreciating, setAppreciating] = useState(false);
 
+    // Enrollment/Join State
+    const [isJoined, setIsJoined] = useState(false); 
+    const [participantCount, setParticipantCount] = useState(0);
+    const [participantList, setParticipantList] = useState([]);
+
     // Data Fetching
     const { course, isLoading, error } = useCourse(id);
     const { comments, isLoading: commentsLoading, error: commentsError, addComment } = useComments(id);
     const { meetings, isLoading: meetingsLoading, error: meetingsError, addMeeting } = useMeetings(id);
     
-    // Get enrolled participants for community display
-    const enrolledUsers = getEnrolledUsersUtil(id);
-    const enrolledCount = getCountUtil(id);
-    const isEnrolled = isEnrolledUtil(id, auth?.username);
+    // Derived State
     const isOwner = !!course && auth?.username === (course?.owner ?? "");
 
-    // Appreciation Logic
     useEffect(() => {
-        const serverAppreciations = course?.likes_count ?? course?.likes ?? 0;
-        if (typeof serverAppreciations === "number") setAppreciations(serverAppreciations);
-        
-        if (course?.user_has_liked === true) {
-            setHasAppreciated(true);
-        } else {
-            const key = `appreciated_circle_${id}_${auth?.username || 'anonymous'}`;
-            setHasAppreciated(localStorage.getItem(key) === "1");
+        if (course) {
+            setIsJoined(course.is_joined); 
+            setParticipantCount(course.participants_count);
+            setParticipantList(course.participant_names || []);
+            
+            const serverAppreciations = course.likes_count ?? course.likes ?? 0;
+            setAppreciations(serverAppreciations);
+            if (course.user_has_liked) setHasAppreciated(true);
         }
-    }, [course, id, auth?.username]);
+    }, [course]);
+
+    // --- JOIN HANDLER ---
+    const handleJoinCircle = async () => {
+        if (!auth || !auth.token) {
+            alert("Please log in to join this conversation.");
+            navigate("/login");
+            return;
+        }
+
+        try {
+            // Call the Django Database
+            const response = await postJoin(id, auth.token);
+            
+            // Update UI immediately
+            setIsJoined(response.is_joined);
+            
+            // Update count locally
+            setParticipantCount(prev => response.is_joined ? prev + 1 : prev - 1);
+            
+            alert(response.message);
+            // Reload to ensure all data (like potential avatar lists) is fresh
+            window.location.reload();
+        } catch (err) {
+            alert(err.message);
+        }
+    };
 
     const handleAppreciate = async () => {
         if (hasAppreciated || appreciating) return;
@@ -103,21 +129,6 @@ function CoursePage() {
     const handleCommentAdded = (newComment) => addComment(newComment);
     const handleMeetingCreated = (newMeeting) => addMeeting(newMeeting);
 
-    const handleJoinCircle = () => {
-        if (!auth || !auth.token) {
-            alert("Please log in to join this conversation.");
-            navigate("/login");
-            return;
-        }
-        const res = enrollUtil(id, auth?.username);
-        if (!res.ok) {
-            alert("You're already part of this circle!");
-            return;
-        }
-        alert("Welcome to the circle!");
-        window.location.reload();
-    };
-
     // Utility Functions
     const decodeHTML = (html) => {
         const el = document.createElement('textarea');
@@ -134,8 +145,6 @@ function CoursePage() {
 
     return (
         <div className="course-page">
-            {/* PUBLIC SECTION: Circle Overview (Everyone can see)          */}
-            
             <section className="circle-overview-public">
                 {/* Header */}
                 <div className="circle-header-community">
@@ -171,7 +180,7 @@ function CoursePage() {
 
                         <span className="stat-item">
                             <Users size={16} />
-                            {enrolledCount} {enrolledCount === 1 ? 'participant' : 'participants'}
+                            {participantCount} participants
                         </span>
                         <span className="stat-item">
                             <Heart size={16} />
@@ -184,18 +193,19 @@ function CoursePage() {
                     </div>
 
                     {/* Participant Avatars */}
-                    {enrolledCount > 0 && (
+                    {participantCount > 0 && (
                         <div className="circle-participants">
                             <h3>Who's in this circle</h3>
                             <div className="participant-avatars">
-                                {enrolledUsers.slice(0, 8).map((username, i) => (
+                                {participantList.map((username, i) => (
                                     <div key={i} className="avatar-bubble" title={username}>
                                         {username?.[0]?.toUpperCase() || '?'}
                                     </div>
                                 ))}
-                                {enrolledCount > 8 && (
+
+                                {participantCount > participantList.length && (
                                     <div className="avatar-bubble more">
-                                        +{enrolledCount - 8}
+                                        +{participantCount - participantList.length}
                                     </div>
                                 )}
                             </div>
@@ -204,7 +214,7 @@ function CoursePage() {
 
                     {/* Join/Enrolled Badge */}
                     <div className="circle-join-section">
-                        {!isOwner && !isEnrolled && (
+                        {!isOwner && !isJoined && (
                             <button 
                                 className="btn-join-conversation" 
                                 onClick={handleJoinCircle}
@@ -212,7 +222,7 @@ function CoursePage() {
                                 Join the Conversation
                             </button>
                         )}
-                        {isEnrolled && !isOwner && (
+                        {isJoined && !isOwner && (
                             <div className="enrolled-badge-with-hint">
                                 <div className="enrolled-badge">
                                     <CheckCircle size={18} />
@@ -246,7 +256,7 @@ function CoursePage() {
                 </section>
 
                 {/* Recent Conversations Preview (Public teaser) */}
-                {!isEnrolled && comments && comments.length > 0 && (
+                {!isJoined && comments && comments.length > 0 && (
                     <section className="recent-conversations-teaser">
                         <h3>Recent conversations in this circle</h3>
                         <div className="conversation-preview">
@@ -264,8 +274,8 @@ function CoursePage() {
                 )}
             </section>
 
-            {/* MEMBERS-ONLY SECTION: Circle Dashboard                      */}           
-            {(isEnrolled || isOwner) && (
+            {/* MEMBERS-ONLY SECTION: Circle Dashboard */}           
+            {(isJoined || isOwner) && (
                 <>
                     {/* Dashboard Divider */}
                     <section className="dashboard-divider">

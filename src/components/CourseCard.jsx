@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
-import { isEnrolled, isFull, getCount } from "../utils/enrollment";
 import "./CourseCard.css";
 import categoryImages from "../utils/category-images";
 import { categoryDisplay } from "../utils/category-display";
@@ -17,8 +16,8 @@ function CourseCard({ courseData, isFeatured = false }) {
     const courseId = courseData?.id;
     const appreciationsCount = courseData?.likes_count ?? courseData?.likes ?? 0;
     const maxStudents = Number(courseData?.max_students ?? courseData?.capacity ?? 0) || null;
-    const enrolledCount = getCount(courseId);
-    const youAreEnrolled = isEnrolled(courseId, auth?.username);
+    const enrolledCount = courseData.participants_count || 0;;
+    const youAreEnrolled = courseData.is_joined || false;
     const durationHours = courseData?.duration_in_hours ?? courseData?.duration;
     
     // Capacity calculations (for display only, NOT blocking)

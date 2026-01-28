@@ -149,6 +149,14 @@ function About() {
                             <p>Frontend development</p>
                         </div>
                     </div>
+
+                    <div className="timeline-item">
+                        <div className="timeline-circle">5</div>
+                        <div className="timeline-content">
+                            <h3>Week 2</h3>
+                            <p>Self-iterate Stage: add four zones: </p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
