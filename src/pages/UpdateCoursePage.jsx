@@ -33,17 +33,21 @@ function UpdateCoursePage () {
     if (!course) return <p>Course not found</p>
 
     return (
-        <section className="update-course-page">
-            <h2 className="underline">Edit Circle: {course.title}</h2>
+        <div className="form-page">
+            <div className="form-card update-course-card">
+                <h1>Edit Circle: {course.title}</h1>
 
-            {updateMessage && <p className="success-message">{updateMessage}</p>}
-        
-            {/* Render the form passing the fetched data */}
-            <UpdateCourseForm
-                existingData={course}
-                setUpdateMessage={setUpdateMessage}
-            />
-        </section>
+                {updateMessage && 
+                <p className="success-message" style={{textAlign:'center', color:'green', fontWeight:'bold'}}>
+                    {updateMessage}
+                </p>}
+            
+                <UpdateCourseForm
+                    existingData={course}
+                    setUpdateMessage={setUpdateMessage}
+                />
+            </div>
+        </div>
     );
 }
 

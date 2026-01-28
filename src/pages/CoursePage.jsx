@@ -141,9 +141,7 @@ function CoursePage() {
 
     return (
         <div className="course-page">
-            {/* ═══════════════════════════════════════════════════════════ */}
             {/* PUBLIC SECTION: Circle Overview (Everyone can see)          */}
-            {/* ═══════════════════════════════════════════════════════════ */}
             
             <section className="circle-overview-public">
                 {/* Header */}
@@ -268,10 +266,7 @@ function CoursePage() {
                 )}
             </section>
 
-            {/* ═══════════════════════════════════════════════════════════ */}
-            {/* MEMBERS-ONLY SECTION: Circle Dashboard                      */}
-            {/* ═══════════════════════════════════════════════════════════ */}
-            
+            {/* MEMBERS-ONLY SECTION: Circle Dashboard                      */}           
             {isEnrolled && (
                 <>
                     {/* Dashboard Divider */}

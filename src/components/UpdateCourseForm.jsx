@@ -7,6 +7,7 @@ import useMilestones from "../hooks/use-milestones";
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import MilestoneBuilder from "./MilestoneBuilder";
+import "./UpdateCourseForm.css";
 
 function UpdateCourseForm({ existingData, setUpdateMessage }) {
     const navigate = useNavigate();
@@ -53,7 +54,7 @@ function UpdateCourseForm({ existingData, setUpdateMessage }) {
     });
 
     useEffect(() => {
-        if (editor && existingData?.course_content) {
+        if (editor && existingData?.course_content && editor.isEmpty) {
             editor.commands.setContent(existingData.course_content);
         }
     }, [editor, existingData]);
@@ -110,8 +111,6 @@ function UpdateCourseForm({ existingData, setUpdateMessage }) {
             const updatedCourse = await putCourse(courseId, updatePayload, auth.token);
 
             // Step 2: Handle milestones
-            // Note: This is a simplified approach - only adds new milestones
-            // For full CRUD (update/delete existing), you'd need more API endpoints
             const newMilestones = milestones.filter(m => !m.isExisting);
             
             if (newMilestones.length > 0) {
@@ -141,160 +140,156 @@ function UpdateCourseForm({ existingData, setUpdateMessage }) {
     };
 
     return (
-        <form onSubmit={handleClickSubmit} className="update-course-form">
-            <h1 className="form-title">Edit Circle</h1>
-            
-            {error && <div className="error-message">{error}</div>}
-            
-            {/* ═══ SECTION 1: CIRCLE BASICS ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">Circle Basics</h2>
-
-                <div className="form-field">
-                    <label htmlFor="title">Circle Name *</label>
-                    <input 
-                        type="text" 
-                        id="title" 
-                        value={courseForm.title} 
-                        onChange={handleClickChange} 
-                        required 
-                    />
-                </div>
+            <form onSubmit={handleClickSubmit}>           
+                {error && <div className="error-message">{error}</div>}
                 
-                <div className="form-field">
-                    <label htmlFor="brief_description">Brief Description *</label>
-                    <textarea 
-                        id="brief_description" 
-                        value={courseForm.brief_description}
-                        placeholder="A short overview (max 250 characters)" 
-                        onChange={handleClickChange} 
-                        rows="3"
-                        maxLength={250}
-                        required 
-                    />
-                    <span className="char-count">{courseForm.brief_description.length}/250</span>
-                </div>
-
-                <div className="form-field">
-                    <label htmlFor="category">Category *</label>
-                    <select id="category" value={courseForm.category} onChange={handleClickChange} required>
-                        <option value="">--Select Category--</option>
-                        <option value="science and technology">Science and Technology</option>
-                        <option value="arts and crafts">Arts and Crafts</option>
-                        <option value="reading and writing">Reading and Writing</option>
-                        <option value="music and musical instruments">Music and Musical Instruments</option>
-                        <option value="languages">Languages</option>
-                        <option value="health and wellness">Health and Wellness</option>
-                        <option value="business and finance">Business and Finance</option>
-                        <option value="personal development">Personal Development</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </section>
-
-            {/* ═══ SECTION 2: WHAT WE'LL LEARN ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">What We'll Learn Together</h2>
-                <p className="section-hint">
-                    Describe what participants will learn and experience in this circle.
-                </p>
-
-                <div className="form-field">
-                    <EditorContent editor={editor} className="tiptap" />
-                </div>
-            </section>
-
-            {/* ═══ SECTION 3: LEARNING MODULES ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">📚 Learning Modules</h2>
-                <p className="section-hint">
-                    {milestonesLoading 
-                        ? "Loading existing modules..." 
-                        : "Add new modules or view existing ones. Note: Currently you can only add new modules. To edit or remove existing modules, please contact support."
-                    }
-                </p>
-
-                {!milestonesLoading && (
-                    <>
-                        {/* Show existing milestones (read-only for now) */}
-                        {existingMilestones && existingMilestones.length > 0 && (
-                            <div className="existing-milestones-info">
-                                <h4>Existing Modules:</h4>
-                                <ul className="existing-modules-list">
-                                    {existingMilestones.map(m => (
-                                        <li key={m.id}>
-                                            <strong>Module {m.order}:</strong> {m.title}
-                                            {m.description && <span> - {m.description}</span>}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <p className="hint-text">👆 These modules are already saved. Add new ones below:</p>
-                            </div>
-                        )}
-
-                        {/* MilestoneBuilder for new milestones */}
-                        <MilestoneBuilder 
-                            milestones={milestones.filter(m => !m.isExisting)} 
-                            setMilestones={(newMilestones) => {
-                                // Combine existing + new
-                                const existing = milestones.filter(m => m.isExisting);
-                                setMilestones([...existing, ...newMilestones]);
-                            }}
-                        />
-                    </>
-                )}
-            </section>
-
-            {/* ═══ SECTION 4: CIRCLE SETTINGS ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">Circle Settings</h2>
-
-                <div className="form-row">
+                {/* ═══ SECTION 1: CIRCLE BASICS ═══ */}
+                <section className="form-section">
                     <div className="form-field">
-                        <label htmlFor="difficulty_level">Difficulty Level</label>
-                        <select 
-                            id="difficulty_level" 
-                            value={courseForm.difficulty_level} 
-                            onChange={handleClickChange}
-                        >
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
+                        <label htmlFor="title">Circle Name *</label>
+                        <input 
+                            type="text" 
+                            id="title" 
+                            value={courseForm.title} 
+                            onChange={handleClickChange} 
+                            required 
+                        />
+                    </div>
+                    
+                    <div className="form-field">
+                        <label htmlFor="brief_description">Brief Description *</label>
+                        <textarea 
+                            id="brief_description" 
+                            value={courseForm.brief_description}
+                            placeholder="A short overview (max 250 characters)" 
+                            onChange={handleClickChange} 
+                            rows="3"
+                            maxLength={250}
+                            required 
+                        />
+                        <span className="char-count">{courseForm.brief_description.length}/250</span>
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="category">Category *</label>
+                        <select id="category" value={courseForm.category} onChange={handleClickChange} required>
+                            <option value="">--Select Category--</option>
+                            <option value="science and technology">Science and Technology</option>
+                            <option value="arts and crafts">Arts and Crafts</option>
+                            <option value="reading and writing">Reading and Writing</option>
+                            <option value="music and musical instruments">Music and Musical Instruments</option>
+                            <option value="languages">Languages</option>
+                            <option value="health and wellness">Health and Wellness</option>
+                            <option value="business and finance">Business and Finance</option>
+                            <option value="personal development">Personal Development</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
+                </section>
+
+                {/* ═══ SECTION 2: WHAT WE'LL LEARN ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">What We'll Learn Together</h2>
+                    <p className="section-hint">
+                        Update the curriculum, goals, or expectations.
+                    </p>
 
                     <div className="form-field">
-                        <label htmlFor="duration_in_hours">Estimated Duration (hours)</label>
+                        <EditorContent editor={editor} className="tiptap" />
+                    </div>
+                </section>
+
+                {/* ═══ SECTION 3: LEARNING MODULES ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">📚 Learning Modules</h2>
+                    <p className="section-hint">
+                        {milestonesLoading 
+                            ? "Loading existing modules..." 
+                            : "Add new modules below. Note: Currently you can only add new modules. To edit or remove existing modules, please contact support."
+                        }
+                    </p>
+
+                    {!milestonesLoading && (
+                        <>
+                            {/* Show existing milestones (read-only for now) */}
+                            {existingMilestones && existingMilestones.length > 0 && (
+                                <div className="existing-milestones-info">
+                                    <h4>Existing Modules:</h4>
+                                    <ul className="existing-modules-list">
+                                        {existingMilestones.map(m => (
+                                            <li key={m.id}>
+                                                <strong>Module {m.order}:</strong> {m.title}
+                                                {m.description && <span> - {m.description}</span>}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <p className="hint-text">These modules are already saved. Add new ones below:</p>
+                                </div>
+                            )}
+
+                            {/* MilestoneBuilder for new milestones */}
+                            <MilestoneBuilder 
+                                milestones={milestones.filter(m => !m.isExisting)} 
+                                setMilestones={(newMilestones) => {
+                                    // Combine existing + new
+                                    const existing = milestones.filter(m => m.isExisting);
+                                    setMilestones([...existing, ...newMilestones]);
+                                }}
+                            />
+                        </>
+                    )}
+                </section>
+
+                {/* ═══ SECTION 4: CIRCLE SETTINGS ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">Circle Settings</h2>
+
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label htmlFor="difficulty_level">Difficulty Level</label>
+                            <select 
+                                id="difficulty_level" 
+                                value={courseForm.difficulty_level} 
+                                onChange={handleClickChange}
+                            >
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+
+                        <div className="form-field">
+                            <label htmlFor="duration_in_hours">Estimated Duration (hours)</label>
+                            <input 
+                                type="number" 
+                                id="duration_in_hours" 
+                                value={courseForm.duration_in_hours} 
+                                onChange={handleClickChange} 
+                                min="1"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="max_students">Maximum Participants *</label>
                         <input 
                             type="number" 
-                            id="duration_in_hours" 
-                            value={courseForm.duration_in_hours} 
+                            id="max_students" 
+                            value={courseForm.max_students} 
                             onChange={handleClickChange} 
                             min="1"
+                            required 
                         />
                     </div>
-                </div>
+                </section>
 
-                <div className="form-field">
-                    <label htmlFor="max_students">Maximum Participants *</label>
-                    <input 
-                        type="number" 
-                        id="max_students" 
-                        value={courseForm.max_students} 
-                        onChange={handleClickChange} 
-                        min="1"
-                        required 
-                    />
+                {/* ═══ SUBMIT BUTTON ═══ */}
+                <div className="form-actions">
+                    <button type="submit" disabled={loading} className="primary-btn">
+                        {loading ? "Saving..." : "Save Changes"}
+                    </button>
                 </div>
-            </section>
-
-            {/* ═══ SUBMIT BUTTON ═══ */}
-            <div className="form-actions">
-                <button type="submit" disabled={loading} className="primary-btn">
-                    {loading ? "Saving..." : "Save Changes"}
-                </button>
-            </div>
-        </form>
+            </form>
     );
 }
 

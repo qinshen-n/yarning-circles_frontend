@@ -1,7 +1,4 @@
-/* ═══════════════════════════════════════════════════════════ */
 /* PUBLIC SECTION STYLING */
-/* ═══════════════════════════════════════════════════════════ */
-
 .circle-overview-public {
     /* Public section has lighter background */
 }
@@ -74,9 +71,7 @@
     margin: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════ */
 /* DASHBOARD DIVIDER */
-/* ═══════════════════════════════════════════════════════════ */
 
 .dashboard-divider {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
@@ -100,10 +95,6 @@
     font-size: 1.05rem;
     margin: 0;
 }
-
-/* ═══════════════════════════════════════════════════════════ */
-/* EXISTING STYLES CONTINUE BELOW */
-/* ═══════════════════════════════════════════════════════════ */
 
 .course-page {
     max-width: 900px;
@@ -542,9 +533,7 @@
     font-weight: 500;
 }
 
-/* ═══════════════════════════════════════════════════════ */
-/* APPRECIATION SECTION - UPDATED */
-/* ═══════════════════════════════════════════════════════ */
+/* APPRECIATION SECTION */
 .circle-appreciation {
     background: linear-gradient(135deg, #fef3f3 0%, #fff5f5 100%);
     border-radius: 0 0 16px 16px;

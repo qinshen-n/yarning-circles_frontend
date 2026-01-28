@@ -48,7 +48,7 @@ function CreateCourseForm() {
     // Initialize Tiptap editor
     const editor = useEditor({
         extensions: [StarterKit],
-        content: '<p>Describe what participants will learn in this circle. Use headings, lists, and formatting to make it clear and engaging.</p>',
+        content: '<p>Start typing here...</p>',
         onUpdate: ({ editor }) => {
             const html = editor.getHTML();
             setCourseform(prev => ({ ...prev, course_content: html }));
@@ -261,213 +261,212 @@ function CreateCourseForm() {
     };
 
     return (
-        <form className="form-grid create-course-form" onSubmit={handleClickSubmit}>
-            <h1 className="form-title">Start a New Circle</h1>
-            
-            {error && <div className="error-message">{error}</div>}
+        <div className="form-page">
+            <form className="create-course-form" onSubmit={handleClickSubmit}>
+                
+                {error && <div className="error-message">{error}</div>}
 
-            {/* ═══ SECTION 1: CIRCLE BASICS ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">Circle Basics</h2>
-
-                <div className="form-field">
-                    <label htmlFor="title">Circle Name *</label>
-                    <input
-                        type="text"
-                        id="title"
-                        placeholder="What will you learn together?"
-                        onChange={handleClickChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-field">
-                    <label htmlFor="brief_description">Brief Description *</label>
-                    <textarea
-                        id="brief_description"
-                        placeholder="A short overview of what this circle is about (max 250 characters)"
-                        maxLength={250}
-                        onChange={handleClickChange}
-                        rows="3"
-                        required
-                    />
-                    <span className="char-count">{courseform.brief_description.length}/250</span>
-                </div>
-
-                <div className="form-field">
-                    <label htmlFor="category">Category *</label>
-                    <select id="category" onChange={handleClickChange} required>
-                        <option value="">--Select a category--</option>
-                        <option value="science and technology">Science and Technology</option>
-                        <option value="arts and crafts">Arts and Crafts</option>
-                        <option value="reading and writing">Reading and Writing</option>
-                        <option value="music and musical instruments">Music and Musical Instruments</option>
-                        <option value="languages">Languages</option>
-                        <option value="health and wellness">Health and Wellness</option>
-                        <option value="business and finance">Business and Finance</option>
-                        <option value="personal development">Personal Development</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </section>
-
-            {/* ═══ SECTION 2: WHAT WE'LL LEARN ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">What We'll Learn Together</h2>
-                <p className="section-hint">
-                    Describe what participants will learn and experience in this circle. 
-                    Use headings, lists, and formatting to make it engaging.
-                </p>
-
-                <div className="form-field">
-                    <EditorContent editor={editor} className="tiptap" />
-                </div>
-            </section>
-
-            {/* ═══ SECTION 3: LEARNING MODULES ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">📚 Learning Modules (Optional)</h2>
-                <p className="section-hint">
-                    Break down the learning journey into trackable modules. 
-                    Members can check off modules as they progress through the circle.
-                </p>
-
-                <MilestoneBuilder 
-                    milestones={milestones} 
-                    setMilestones={setMilestones} 
-                />
-            </section>
-
-            {/* ═══ SECTION 4: CIRCLE SETTINGS ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">Circle Settings</h2>
-
-                <div className="form-row">
+                {/* ═══ SECTION 1: CIRCLE BASICS ═══ */}
+                <section className="form-section">
                     <div className="form-field">
-                        <label htmlFor="difficulty_level">Difficulty Level</label>
-                        <select 
-                            id="difficulty_level" 
-                            onChange={handleClickChange} 
-                            value={courseform.difficulty_level}
-                        >
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
+                        <label htmlFor="title">Circle Name *</label>
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="What will you learn together?"
+                            onChange={handleClickChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="brief_description">Brief Description *</label>
+                        <textarea
+                            id="brief_description"
+                            placeholder="A short overview of what this circle is about (max 250 characters)"
+                            maxLength={250}
+                            onChange={handleClickChange}
+                            rows="3"
+                            required
+                        />
+                        <span className="char-count">{courseform.brief_description.length}/250</span>
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="category">Category *</label>
+                        <select id="category" onChange={handleClickChange} required>
+                            <option value="">--Select a category--</option>
+                            <option value="science and technology">Science and Technology</option>
+                            <option value="arts and crafts">Arts and Crafts</option>
+                            <option value="reading and writing">Reading and Writing</option>
+                            <option value="music and musical instruments">Music and Musical Instruments</option>
+                            <option value="languages">Languages</option>
+                            <option value="health and wellness">Health and Wellness</option>
+                            <option value="business and finance">Business and Finance</option>
+                            <option value="personal development">Personal Development</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
+                </section>
+
+                {/* ═══ SECTION 2: WHAT WE'LL LEARN ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">What We'll Learn Together</h2>
+                    <p className="section-hint">
+                        Share the detailed curriculum, goals, and what to expect. 
+                        Use formatting to make it easy to read.
+                    </p>
 
                     <div className="form-field">
-                        <label htmlFor="duration_in_hours">Estimated Duration (hours)</label>
+                        <EditorContent editor={editor} className="tiptap" />
+                    </div>
+                </section>
+
+                {/* ═══ SECTION 3: LEARNING MODULES ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">📚 Learning Modules (Optional)</h2>
+                    <p className="section-hint">
+                        Break down the learning journey into trackable modules. 
+                        Members can check off modules as they progress through the circle.
+                    </p>
+
+                    <MilestoneBuilder 
+                        milestones={milestones} 
+                        setMilestones={setMilestones} 
+                    />
+                </section>
+
+                {/* ═══ SECTION 4: CIRCLE SETTINGS ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">Circle Settings</h2>
+
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label htmlFor="difficulty_level">Difficulty Level</label>
+                            <select 
+                                id="difficulty_level" 
+                                onChange={handleClickChange} 
+                                value={courseform.difficulty_level}
+                            >
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+
+                        <div className="form-field">
+                            <label htmlFor="duration_in_hours">Estimated Duration (hours)</label>
+                            <input
+                                type="number"
+                                id="duration_in_hours"
+                                placeholder="e.g., 12"
+                                onChange={handleClickChange}
+                                min="1"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="max_students">Maximum Participants *</label>
                         <input
                             type="number"
-                            id="duration_in_hours"
-                            placeholder="e.g., 12"
+                            id="max_students"
+                            placeholder="How many people can join?"
                             onChange={handleClickChange}
                             min="1"
+                            required
                         />
                     </div>
-                </div>
+                </section>
 
-                <div className="form-field">
-                    <label htmlFor="max_students">Maximum Participants *</label>
-                    <input
-                        type="number"
-                        id="max_students"
-                        placeholder="How many people can join?"
-                        onChange={handleClickChange}
-                        min="1"
-                        required
-                    />
-                </div>
-            </section>
+                {/* ═══ SECTION 5: RESOURCES ═══ */}
+                <section className="form-section">
+                    <h2 className="section-title">📎 Resources</h2>
+                    <p className="section-hint">
+                        Upload images, videos, or PDFs to share with circle members.
+                    </p>
 
-            {/* ═══ SECTION 5: RESOURCES ═══ */}
-            <section className="form-section">
-                <h2 className="section-title">📎 Resources</h2>
-                <p className="section-hint">
-                    Upload images, videos, or PDFs to share with circle members.
-                </p>
+                    <div className="file-uploader">
+                        <div className="file-input-container">
+                            <input
+                                id="file-input"
+                                type="file"
+                                accept="image/jpeg,image/png,video/mp4,video/quicktime,application/pdf"
+                                onChange={handleFileSelect}
+                                disabled={isUploading}
+                                className="file-input"
+                            />
+                            <label htmlFor="file-input" className={`file-input-label ${isUploading ? 'disabled' : ''}`}>
+                                Choose File
+                            </label>
+                        </div>
 
-                <div className="file-uploader">
-                    <div className="file-input-container">
-                        <input
-                            id="file-input"
-                            type="file"
-                            accept="image/jpeg,image/png,video/mp4,video/quicktime,application/pdf"
-                            onChange={handleFileSelect}
-                            disabled={isUploading}
-                            className="file-input"
-                        />
-                        <label htmlFor="file-input" className={`file-input-label ${isUploading ? 'disabled' : ''}`}>
-                            Choose File
-                        </label>
-                    </div>
+                        {selectedFile && (
+                            <div className="selected-file">
+                                <div className="file-info">
+                                    <span className="file-icon">{getFileTypeIcon(selectedFile.type)}</span>
+                                    <div className="file-details">
+                                        <strong>{selectedFile.name}</strong>
+                                        <div className="file-meta">
+                                            {selectedFile.type} • {formatFileSize(selectedFile.size)}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button
+                                    type="button"
+                                    onClick={handleUpload}
+                                    disabled={isUploading}
+                                    className={`upload-button ${isUploading ? 'uploading' : ''}`}
+                                >
+                                    {isUploading ? 'Uploading...' : 'Upload File'}
+                                </button>
+                            </div>
+                        )}
 
-                    {selectedFile && (
-                        <div className="selected-file">
-                            <div className="file-info">
-                                <span className="file-icon">{getFileTypeIcon(selectedFile.type)}</span>
-                                <div className="file-details">
-                                    <strong>{selectedFile.name}</strong>
-                                    <div className="file-meta">
-                                        {selectedFile.type} • {formatFileSize(selectedFile.size)}
+                        {uploadProgress > 0 && (
+                            <div className="progress-container">
+                                <div className="progress-bar">
+                                    <div 
+                                        className="progress-fill" 
+                                        style={{ width: `${uploadProgress}%` }}
+                                    ></div>
+                                </div>
+                                <span className="progress-text">{uploadProgress}%</span>
+                            </div>
+                        )}
+
+                        {uploadStatus && (
+                            <div className={`status-message ${uploadStatus.startsWith('Error') || uploadStatus.includes('failed') ? 'error' : uploadStatus.includes('success') ? 'success' : 'info'}`}>
+                                {uploadStatus}
+                            </div>
+                        )}
+
+                        {uploadedFiles.length > 0 && (
+                            <div className="uploaded-files-preview">
+                                <p className="upload-success">✓ File uploaded successfully</p>
+                                <div className="uploaded-file-item">
+                                    <span className="file-icon">{getFileTypeIcon(uploadedFiles[0].type)}</span>
+                                    <div className="file-info">
+                                        <div className="file-name">{uploadedFiles[0].name}</div>
+                                        <a href={uploadedFiles[0].publicUrl} target="_blank" rel="noopener noreferrer" className="view-link">
+                                            View uploaded file →
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <button
-                                type="button"
-                                onClick={handleUpload}
-                                disabled={isUploading}
-                                className={`upload-button ${isUploading ? 'uploading' : ''}`}
-                            >
-                                {isUploading ? 'Uploading...' : 'Upload File'}
-                            </button>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                </section>
 
-                    {uploadProgress > 0 && (
-                        <div className="progress-container">
-                            <div className="progress-bar">
-                                <div 
-                                    className="progress-fill" 
-                                    style={{ width: `${uploadProgress}%` }}
-                                ></div>
-                            </div>
-                            <span className="progress-text">{uploadProgress}%</span>
-                        </div>
-                    )}
-
-                    {uploadStatus && (
-                        <div className={`status-message ${uploadStatus.startsWith('Error') || uploadStatus.includes('failed') ? 'error' : uploadStatus.includes('success') ? 'success' : 'info'}`}>
-                            {uploadStatus}
-                        </div>
-                    )}
-
-                    {uploadedFiles.length > 0 && (
-                        <div className="uploaded-files-preview">
-                            <p className="upload-success">✓ File uploaded successfully</p>
-                            <div className="uploaded-file-item">
-                                <span className="file-icon">{getFileTypeIcon(uploadedFiles[0].type)}</span>
-                                <div className="file-info">
-                                    <div className="file-name">{uploadedFiles[0].name}</div>
-                                    <a href={uploadedFiles[0].publicUrl} target="_blank" rel="noopener noreferrer" className="view-link">
-                                        View uploaded file →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                {/* ═══ SUBMIT BUTTON ═══ */}
+                <div className="form-actions">
+                    <button type="submit" disabled={loading} className="primary-btn">
+                        {loading ? "Creating Circle..." : "Start Circle"}
+                    </button>
                 </div>
-            </section>
-
-            {/* ═══ SUBMIT BUTTON ═══ */}
-            <div className="form-actions">
-                <button type="submit" disabled={loading} className="primary-btn">
-                    {loading ? "Creating Circle..." : "Start Circle"}
-                </button>
-            </div>
-        </form>
+            </form>
+        </div>
     );
 }
 

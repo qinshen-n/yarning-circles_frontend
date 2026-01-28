@@ -1,363 +1,117 @@
-/* CREATE COURSE FORM */
-.create-course-form {
-    max-width: 900px;
+/* 1. CONTAINER & LAYOUT */
+.create-course-card {
+    max-width: 900px !important;
     margin: 0 auto;
-    padding: 2rem;
 }
 
-.form-title {
-    font-family: var(--font-playfair);
-    font-size: 2.2rem;
-    color: var(--brand);
-    margin: 0 0 2rem;
+.create-course-card h1 {
+    margin-bottom: 1.5rem !important; 
     text-align: center;
+    color: var(--brand);
 }
 
-/* Form Sections */
+/* 2. SECTION SPACING */
 .form-section {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; 
+    border-bottom: 1px solid rgba(0, 124, 130, 0.1); 
+    padding-bottom: 1.5rem;
 }
 
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Section Title & Hint */
 .section-title {
     font-family: var(--font-playfair);
-    font-size: 1.5rem;
-    color: var(--brand);
-    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+    color: var(--highlight);
+    margin: 0 0 0.25rem; 
     font-weight: 700;
 }
 
 .section-hint {
-    color: #64748b;
-    font-size: 0.95rem;
-    margin: 0 0 1.5rem;
-    line-height: 1.6;
+    color: #475569;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem; 
+    line-height: 1.5;
 }
 
-/* Form Fields */
+/* 3. INPUTS */
+
 .form-field {
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-
-.form-field:last-child {
-    margin-bottom: 0;
+    margin-bottom: 1.25rem; 
 }
 
 .form-field label {
-    display: block;
-    font-weight: 600;
     color: var(--brand);
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-family: inherit;
+    background-color: var(--white) !important;
+    border: 1px solid #cbd5e1 !important; 
+    border-radius: 8px !important;
+    padding: 0.7rem 1rem;
+    font-family: var(--font-sourcesans);
     font-size: 1rem;
-    transition: border-color 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+    transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Remove default focus outlines to prevent "Double Layer" effect */
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-    outline: none;
-    border-color: var(--highlight);
-    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.1);
+    outline: none !important;
+    border-color: var(--highlight) !important;
+    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.15) !important;
 }
 
-.form-field textarea {
-    resize: vertical;
-}
-
-.char-count {
-    position: absolute;
-    right: 0.5rem;
-    bottom: -1.5rem;
-    font-size: 0.85rem;
-    color: #94a3b8;
-}
-
-/* Form Row (side by side fields) */
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-/* Error Message */
-.error-message {
-    background: #fee;
-    border: 1px solid #fca5a5;
-    color: #dc2626;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-}
-
-/* Tiptap Editor */
+/* 4. TIPTAP EDITOR                                            */
 .tiptap {
-    min-height: 200px;
-    padding: 1rem;
-    border: 1px solid #cbd5e1;
+    min-height: 250px;
+    background: var(--white);
+    border: 1px solid #cbd5e1; 
     border-radius: 8px;
-    background: white;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
+    padding: 1.5rem;
+    color: #334155;
+    font-size: 1rem;
 }
 
 .tiptap:focus {
     outline: none;
     border-color: var(--highlight);
-    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 124, 130, 0.15);
 }
 
-.tiptap p {
-    margin: 0.5rem 0;
-}
-
-.tiptap h1, .tiptap h2, .tiptap h3 {
-    margin: 1rem 0 0.5rem;
-    font-family: var(--font-playfair);
-}
-
-.tiptap ul, .tiptap ol {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-}
-
-/* File Uploader */
-.file-uploader {
-    background: #f8fafc;
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    padding: 1.5rem;
-}
-
-.file-input-container {
-    margin-bottom: 1rem;
-}
-
-.file-input {
-    display: none;
-}
-
-.file-input-label {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--highlight);
-    color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.file-input-label:hover {
-    background: #006368;
-}
-
-.file-input-label.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.selected-file {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.file-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.file-icon {
-    font-size: 2rem;
-}
-
-.file-details strong {
-    display: block;
-    color: var(--brand);
-    margin-bottom: 0.25rem;
-}
-
-.file-meta {
-    font-size: 0.85rem;
-    color: #64748b;
-}
-
-.upload-button {
-    width: 100%;
-    padding: 0.75rem;
-    background: var(--action);
-    color: var(--brand);
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.upload-button:hover:not(:disabled) {
-    background: #e09d00;
-}
-
-.upload-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.progress-container {
-    margin: 1rem 0;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #e2e8f0;
-    border-radius: 50px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--highlight), var(--action));
-    transition: width 0.3s ease;
-}
-
-.progress-text {
-    display: block;
-    text-align: center;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #64748b;
-    font-weight: 600;
-}
-
-.status-message {
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin: 1rem 0;
-}
-
-.status-message.error {
-    background: #fee;
-    color: #dc2626;
-}
-
-.status-message.success {
-    background: #f0fdf4;
-    color: #059669;
-}
-
-.status-message.info {
-    background: #f0f9ff;
-    color: #0284c7;
-}
-
-.uploaded-files-preview {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e2e8f0;
-}
-
-.upload-success {
-    color: #059669;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-}
-
-.uploaded-file-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-}
-
-.file-name {
-    font-weight: 600;
-    color: var(--brand);
-    margin-bottom: 0.25rem;
-}
-
-.view-link {
-    color: var(--highlight);
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-.view-link:hover {
-    text-decoration: underline;
-}
-
-/* Form Actions */
+/* 5. SUBMIT BUTTON */
 .form-actions {
-    text-align: center;
-    margin-top: 2rem;
+    margin-top: 3rem;
+    text-align: center; 
+    padding-top: 2rem;
+    border-top: 1px solid #e0e7ff; 
+    display: flex; 
+    justify-content: center;
+    width: 100%;
 }
 
-.primary-btn {
-    padding: 1rem 3rem;
-    background: var(--action);
-    color: var(--brand);
-    border: none;
-    border-radius: 50px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 14px rgba(254, 175, 0, 0.4);
+.form-actions .primary-btn {
+    padding: 1rem 5rem;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
 }
 
-.primary-btn:hover:not(:disabled) {
+.form-actions .primary-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(254, 175, 0, 0.5);
-}
-
-.primary-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .create-course-form {
-        padding: 1rem;
-    }
-
-    .form-section {
-        padding: 1.5rem;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .form-title {
-        font-size: 1.8rem;
-    }
-
-    .section-title {
-        font-size: 1.3rem;
-    }
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
