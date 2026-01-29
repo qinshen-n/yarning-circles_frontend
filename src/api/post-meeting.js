@@ -3,7 +3,7 @@ async function postMeeting(courseId, meetingData, token) {
     
     const response = await fetch(url, {
         method: "POST",
-        hearders: {
+        headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
         },
