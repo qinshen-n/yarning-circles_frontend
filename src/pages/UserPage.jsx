@@ -15,6 +15,7 @@ function UserPage() {
     const [altLoading, setAltLoading] = useState(!isNumeric);
     const [altError, setAltError] = useState(null);
 
+    // Two paths to access a user: Numeric ID or Username
     useEffect(() => {
         if (!isNumeric && id) {
             setAltLoading(true);
@@ -28,7 +29,7 @@ function UserPage() {
     if (isNumeric ? isLoading : altLoading) return <p>Loading member...</p>;
     if (isNumeric ? error : altError) return <p>{(isNumeric ? error : altError)?.message}</p>;
 
-    const resolvedUser = isNumeric ? user : altUser;
+    const resolvedUser = isNumeric ? user : altUser; // Get user from either path
     if (!resolvedUser) return <p>Member not found</p>;
 
     const joinDate = new Date(resolvedUser.date_joined).toLocaleDateString("en-GB", {
@@ -37,6 +38,7 @@ function UserPage() {
         year: "numeric",
     });
 
+    // Extract the arrays from backend
     const facilitatingCircles = resolvedUser.courses_created || [];
     const joinedCircles = resolvedUser.courses_joined || [];
     const appreciatedCircles = resolvedUser.courses_liked || [];
@@ -117,6 +119,7 @@ function UserPage() {
                             Circles that {resolvedUser.username} found valuable
                         </p>
                     </div>
+                    {/* Loop through and show each circle */}
                     <div className="circles-grid">
                         {appreciatedCircles.map(circle => (
                             <CourseCard key={circle.id} courseData={circle} />
