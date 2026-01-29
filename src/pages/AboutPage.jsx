@@ -122,16 +122,19 @@ function About() {
                     <div className="timeline-item">
                         <div className="timeline-circle">1</div>
                         <div className="timeline-content">
-                            <h3>Week 1</h3>
+                            <h3>Group Project Phase (Weeks 1-5) </h3>
                             <p>MVP development completed</p>
+                            <p>Wireframe and UI design finalized</p>
+                            <p>Backend Development</p>
+                            <p>Frontend development</p>
                         </div>
                     </div>
 
                     <div className="timeline-item">
                         <div className="timeline-circle">2</div>
                         <div className="timeline-content">
-                            <h3>Week 2</h3>
-                            <p>Wireframe and UI design finalized</p>
+                            <h3>Individual Iteration Phase</h3>
+                            <p></p>
                         </div>
                     </div>
 
