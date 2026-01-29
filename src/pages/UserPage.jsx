@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useUser from "../hooks/use-user";
-import useCourses from "../hooks/use-courses";
 import getUserByUsername from "../api/get-user-by-username";
-import { getCoursesForUser } from "../utils/enrollment";
 import CourseCard from "../components/CourseCard";
 import "./UserPage.css";
 
@@ -12,7 +10,6 @@ function UserPage() {
     const isNumeric = Number.isFinite(Number(id));
 
     const { user, isLoading, error } = useUser(isNumeric ? id : undefined);
-    const { courses } = useCourses();
 
     const [altUser, setAltUser] = useState(null);
     const [altLoading, setAltLoading] = useState(!isNumeric);
@@ -40,24 +37,12 @@ function UserPage() {
         year: "numeric",
     });
 
-    // Get circles
-    const facilitatingCircles = (courses || []).
-        filter(c => c.owner === resolvedUser.username)
-        .filter(Boolean);
+    const facilitatingCircles = resolvedUser.courses_created || [];
+    const joinedCircles = resolvedUser.courses_joined || [];
+    const appreciatedCircles = resolvedUser.courses_liked || [];
 
     const facilitatingCount = facilitatingCircles.length;
-
-    const enrolledIds = getCoursesForUser(resolvedUser.username);
-    const joinedCircles = (courses || [])
-        .filter(c => c && enrolledIds.includes(String(c.id ?? c.pk ?? c._id)) && c.owner !== resolvedUser.username)
-        .filter(Boolean);
-
     const joinedCount = joinedCircles.length;
-
-    const appreciatedCircles = (courses || [])
-        .filter(c => resolvedUser?.courses_liked?.includes(c.id))
-        .filter(Boolean);
-
     const appreciatedCount = appreciatedCircles.length;
 
     return (
@@ -100,7 +85,7 @@ function UserPage() {
                     </div>
                     <div className="circles-grid">
                         {facilitatingCircles.map(circle => (
-                            <CourseCard key={circle.id} course={circle} />
+                            <CourseCard key={circle.id} courseData={circle} />
                         ))}
                     </div>
                 </section>
@@ -117,7 +102,7 @@ function UserPage() {
                     </div>
                     <div className="circles-grid">
                         {joinedCircles.map(circle => (
-                            <CourseCard key={circle.id} course={circle} />
+                            <CourseCard key={circle.id} courseData={circle} />
                         ))}
                     </div>
                 </section>
@@ -134,7 +119,7 @@ function UserPage() {
                     </div>
                     <div className="circles-grid">
                         {appreciatedCircles.map(circle => (
-                            <CourseCard key={circle.id} course={circle} />
+                            <CourseCard key={circle.id} courseData={circle} />
                         ))}
                     </div>
                 </section>
