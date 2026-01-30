@@ -1,11 +1,25 @@
 
+/* --- Variables based on original design --- */
+:root {
+    --primary-teal: #00796B;       
+    --secondary-teal: #E0F2F1;     
+    --accent-yellow: #FFC107;   
+    --text-dark: #2c3e50;
+    --text-light: #546e7a;
+    --white: #ffffff;
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.1);
+    --font-heading: 'Georgia', 'Times New Roman', serif; 
+    --font-body: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
 /* ========== BASE ========== */
 .about-page-lean {
+    font-family: var(--font-body);
     background: #f8f9fa;
     min-height: 100vh;
 }
 
-/* ========== HERO - LIGHT STYLE ========== */
+/*  HERO */
 .about-hero-simple {
     background: linear-gradient(135deg, #e6f4ff 0%, #d9ebf7 100%);
     padding: 4rem 2rem;
@@ -64,6 +78,7 @@
     border-radius: 8px;
     border-left: 4px solid #16a085;  /* TEAL */
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
 
 .origin-story h2 {
     font-size: 1.8rem;
@@ -97,51 +112,21 @@
 }
 
 /* ========== ZONES SECTION ========== */
-.zones-section {
-    margin: 5rem 0;
-}
 
-.zones-section h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.section-intro {
-    text-align: center;
-    font-size: 1.05rem;
-    color: #64748b;
-    margin-bottom: 3rem;
-}
-
-/* 2x2 GRID LAYOUT */
 .zones-grid-simple {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
+    margin-top: 2rem;
 }
 
 .zone-card-simple {
     background: white;
-    padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-top: 3px solid;
-    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary-teal);
 }
-
-.zone-card-simple:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-
-/* Zone colors - subtle */
-.zone-1 { border-top-color: #3b82f6; }
-.zone-2 { border-top-color: #8b5cf6; }
-.zone-3 { border-top-color: #f59e0b; }
-.zone-4 { border-top-color: #10b981; }
 
 .zone-card-simple svg {
     color: #94a3b8;
