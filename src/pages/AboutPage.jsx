@@ -6,14 +6,12 @@ import qinImg from "../assets/Qin.jpg";
 import stephImg from "../assets/Steph.jpg";
 import "./AboutPage.css";
 import { 
-    Github, 
-    Linkedin, 
     Calendar,
     Target,
     FileText,
     MessageCircle,
-    ExternalLink
 } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const teamMembers = [
     { name: "Arsen ILHAN", role: "Backend Developer", image: arsenImg, github: "https://github.com/arsenharris", linkedin: "https://www.linkedin.com/in/arsenilhan/" },
@@ -47,21 +45,8 @@ function About() {
                 <section className="about-section-simple origin-story">
                     <h2>Why I Built This</h2>
                     <p>
-                        After completing a 4-week group project that delivered a working course 
-                        platform, I recognized a gap in the market: existing platforms focus on 
-                        individual achievement and competition. I spent the following weeks 
-                        redesigning the experience to support peer-driven learning. The result 
-                        is the 4-zone framework below—four interconnected spaces where learners 
-                        collaborate, share resources, and support each other's growth.
+                        Built on a peer-learning platform foundation created during a 4-week group project, I identified a market gap: existing platforms lack true peer community features. Driven by interest in creating a real product, I redesigned the experience around a 4-zone framework—combining real-time meetings, shared progress tracking, collaborative resources, and async discussions. I implemented the framework across the full stack and migrated the platform to production infrastructure (Azure deployment + PostgreSQL).
                     </p>
-                    <a 
-                        href="https://your-portfolio.com/projects/yarning-circles" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="case-study-link"
-                    >
-                        Read my full case study <ExternalLink size={16} />
-                    </a>
                 </section>
 
                 {/* 4 ZONES */}
@@ -134,12 +119,12 @@ function About() {
                                 <div className="social-links-simple">
                                     {member.github && (
                                         <a href={member.github} target="_blank" rel="noreferrer">
-                                            <Github size={18} />
+                                            <FaGithub size={18} />
                                         </a>
                                     )}
                                     {member.linkedin && (
                                         <a href={member.linkedin} target="_blank" rel="noreferrer">
-                                            <Linkedin size={18} />
+                                            <FaLinkedin size={18} />
                                         </a>
                                     )}
                                 </div>
