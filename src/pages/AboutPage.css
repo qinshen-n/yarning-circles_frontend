@@ -204,8 +204,32 @@
     transform: scale(1.1);
 }
 
-/* ========== JOIN SECTION (IMPROVED) ========== */
+/* ========== JOIN SECTION ========== */
 .join-section {
     text-align: center;
     max-width: 800px;
-    margin: 4rem auto 0
+    margin: 4rem auto 0;
+    padding: 3rem 2rem;
+}
+.join-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #004d40; /* Darker teal */
+}
+
+.join-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #2c3e50;
+    margin-bottom: 0;
+}
+/* ========== RESPONSIVE (CRITICAL FOR MOBILE) ========== */
+@media (max-width: 768px) {
+    .about-hero-simple h1 { font-size: 2.2rem; }
+    .zones-grid-simple { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+    .zones-grid-simple { grid-template-columns: 1fr; }
+    .team-grid-simple { grid-template-columns: 1fr; }
+}
