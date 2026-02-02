@@ -7,7 +7,10 @@ async function postMilestone(courseId, milestoneData, token) {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
         },
-        body: JSON.stringify(milestoneData)
+        body: JSON.stringify({
+            course: courseId,
+            ...milestoneData
+        })
     });
 
     if (!response.ok) {
