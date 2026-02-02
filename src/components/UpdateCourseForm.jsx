@@ -116,15 +116,22 @@ function UpdateCourseForm({ existingData, setUpdateMessage }) {
             if (newMilestones.length > 0) {
                 try {
                     for (const milestone of newMilestones) {
-                        await postMilestone(courseId, {
+                        // Build milestone data conditionally
+                        const milestoneData = {
                             title: milestone.title,
-                            description: milestone.description || "",
+                            // Always send description - use actual content or default
+                            description: milestone.description && milestone.description.trim() 
+                                ? milestone.description.trim() 
+                                : "No description provided",
                             order: milestone.order
-                        }, auth?.token);
+                        };
+
+                        await postMilestone(courseId, milestoneData, auth?.token);
                     }
+                    console.log(`✅ Successfully created ${newMilestones.length} new milestone(s)`);
                 } catch (milestoneError) {
                     console.error("Failed to create new milestones:", milestoneError);
-                    // Continue anyway - main update succeeded
+                    setError(`Circle updated, but failed to add new modules: ${milestoneError.message}`);
                 }
             }
 
