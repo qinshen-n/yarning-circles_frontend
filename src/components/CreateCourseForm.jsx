@@ -232,17 +232,22 @@ function CreateCourseForm() {
             }
 
             const created = await postCreateCourse(formData, auth?.token);
-
             // Step 2: Create milestones if any (loop through each)
             if (milestones.length > 0) {
                 try {
                     for (const milestone of milestones) {
-                        await postMilestone(created.id, {
+                        const milestoneData = {
                             title: milestone.title,
-                            description: milestone.description || "",
+                            // Always send description with content
+                            description: milestone.description && milestone.description.trim() 
+                                ? milestone.description.trim() 
+                                : "No description provided",
                             order: milestone.order
-                        }, auth?.token);
+                        };
+
+                        await postMilestone(created.id, milestoneData, auth?.token);
                     }
+                    console.log(`✅ Successfully created ${milestones.length} new milestone(s)`);
                 } catch (milestoneError) {
                     console.error("Failed to create milestone:", milestoneError);
                     // Continue anyway - some milestones may have been created
